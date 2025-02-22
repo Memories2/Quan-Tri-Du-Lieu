@@ -9,9 +9,9 @@ Học kỳ 2, Năm học 2024-2025
 
 **Họ tên SV 1**: Đỗ Thành Tài
 
-**MSSV 2**:
+**MSSV 2**: B2014583
 
-**Họ tên SV 2**:
+**Họ tên SV 2**:  Võ Thanh Lý
 
 **MSSV 3**:
 
