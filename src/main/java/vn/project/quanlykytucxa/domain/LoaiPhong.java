@@ -13,8 +13,11 @@ import jakarta.persistence.Id;
 public class LoaiPhong {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer maLoaiPhong;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private Integer maLoaiPhong;
+	@Column(length = 8)
+	private String maLoaiPhong;
+	
 
 	@Column(nullable = false, length = 255)
 	private String tenLoaiPhong;
@@ -22,7 +25,7 @@ public class LoaiPhong {
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal giaThue;
 
-	public LoaiPhong(Integer maLoaiPhong, String tenLoaiPhong, BigDecimal giaThue) {
+	public LoaiPhong(String maLoaiPhong, String tenLoaiPhong, BigDecimal giaThue) {
 		super();
 		this.maLoaiPhong = maLoaiPhong;
 		this.tenLoaiPhong = tenLoaiPhong;
@@ -45,8 +48,14 @@ public class LoaiPhong {
 		this.giaThue = giaThue;
 	}
 
-	public Integer getMaLoaiPhong() {
+	public String getMaLoaiPhong() {
 		return maLoaiPhong;
+	}
+
+
+
+	public void setMaLoaiPhong(String maLoaiPhong) {
+		this.maLoaiPhong = maLoaiPhong;
 	}
 
 	public LoaiPhong() {

@@ -13,17 +13,11 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class HopDong {
-	public HopDong(SinhVien sinhVien, Phong phong, LocalDate ngayBatDau, LocalDate ngayKetThuc) {
-		super();
-		this.sinhVien = sinhVien;
-		this.phong = phong;
-		this.ngayBatDau = ngayBatDau;
-		this.ngayKetThuc = ngayKetThuc;
-	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer maHD;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(length = 8)
+	private String maHD;
 
 	@ManyToOne
 	@JoinColumn(name = "maSV", nullable = false)
@@ -43,6 +37,8 @@ public class HopDong {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	public SinhVien getSinhVien() {
 		return sinhVien;
@@ -76,8 +72,22 @@ public class HopDong {
 		this.ngayKetThuc = ngayKetThuc;
 	}
 
-	public Integer getMaHD() {
+
+	public String getMaHD() {
 		return maHD;
+	}
+
+	public HopDong(String maHD, SinhVien sinhVien, Phong phong, LocalDate ngayBatDau, LocalDate ngayKetThuc) {
+		super();
+		this.maHD = maHD;
+		this.sinhVien = sinhVien;
+		this.phong = phong;
+		this.ngayBatDau = ngayBatDau;
+		this.ngayKetThuc = ngayKetThuc;
+	}
+
+	public void setMaHD(String maHD) {
+		this.maHD = maHD;
 	}
 
 	@Override

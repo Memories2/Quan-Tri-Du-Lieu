@@ -1,13 +1,9 @@
 package vn.project.quanlykytucxa.domain;
 
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,8 +11,10 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Phong {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer maPhong;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private Integer maPhong;
+	@Column(length = 8)
+	private String maPhong;
 
 	@ManyToOne
 	@JoinColumn(name = "maLoaiPhong")
@@ -81,8 +79,21 @@ public class Phong {
 		this.tinhTrang = tinhTrang;
 	}
 
-	public Integer getMaPhong() {
+	public String getMaPhong() {
 		return maPhong;
+	}
+
+	public void setMaPhong(String maPhong) {
+		this.maPhong = maPhong;
+	}
+
+	public Phong(String maPhong, LoaiPhong loaiPhong, String soPhong, Integer soLuongToiDa, TinhTrangPhong tinhTrang) {
+		super();
+		this.maPhong = maPhong;
+		this.loaiPhong = loaiPhong;
+		this.soPhong = soPhong;
+		this.soLuongToiDa = soLuongToiDa;
+		this.tinhTrang = tinhTrang;
 	}
 
 }

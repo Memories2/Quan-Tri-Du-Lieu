@@ -12,8 +12,20 @@ import jakarta.persistence.Id;
 @Entity
 public class DichVu {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer maDV;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(length = 8)
+	//private Integer maDV;
+	private String maDV;
+	public DichVu(String maDV, String tenDichVu, BigDecimal donGia) {
+		super();
+		this.maDV = maDV;
+		this.tenDichVu = tenDichVu;
+		this.donGia = donGia;
+	}
+
+	public void setMaDV(String maDV) {
+		this.maDV = maDV;
+	}
 
 	@Column(nullable = false, length = 255)
 	private String tenDichVu;
@@ -48,7 +60,7 @@ public class DichVu {
 		this.donGia = donGia;
 	}
 
-	public Integer getMaDV() {
+	public String getMaDV() {
 		return maDV;
 	}
 
