@@ -13,9 +13,9 @@ Học kỳ 2, Năm học 2024-2025
 
 **Họ tên SV 2**:  Võ Thanh Lý
 
-**MSSV 3**:
+**MSSV 3**: B2205870
 
-**Họ tên SV 3**:
+**Họ tên SV 3**: Đỗ Quang Huy
 
 **MSSV 4**:
 
