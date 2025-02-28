@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import vn.project.quanlykytucxa.domain.LoaiPhong;
 import vn.project.quanlykytucxa.domain.Phong;
+import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.repository.LoaiPhongRepository;
 import vn.project.quanlykytucxa.repository.PhongRepository;
 
@@ -15,10 +16,14 @@ public class PhongService {
 
     private final PhongRepository phongRepository;
     private final LoaiPhongRepository loaiPhongRepository;
+    private final HopDongRepository hopDongRepository;
 
-    public PhongService(PhongRepository phongRepository, LoaiPhongRepository loaiPhongRepository) {
+    public PhongService(PhongRepository phongRepository, LoaiPhongRepository loaiPhongRepository,
+            HopDongRepository hopDongRepository) {
         this.phongRepository = phongRepository;
         this.loaiPhongRepository = loaiPhongRepository;
+        this.hopDongRepository = hopDongRepository;
+        
     }
 
     @Transactional
@@ -31,6 +36,24 @@ public class PhongService {
             }
         }
         phongRepository.save(phong);
+    }
+
+    @Transactional
+    public void deletePhong(String maPhong) {
+        phongRepository.deleteById(maPhong);
+    }
+
+    public boolean existsById(String maPhong) {
+        return phongRepository.existsById(maPhong);
+    }
+
+    // You would want to check if the room is referenced by any contracts
+    // This is a placeholder - implement actual check when HopDongRepository is
+    // completed
+    public boolean isPhongInUse(String maPhong) {
+        // Example implementation if you had a HopDongRepository:
+         return hopDongRepository.existsByPhongMaPhong(maPhong);
+       // return false;
     }
 
     public Optional<Phong> findPhongById(String maPhong) {

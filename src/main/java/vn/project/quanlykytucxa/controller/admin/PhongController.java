@@ -84,4 +84,48 @@ public class PhongController {
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật phòng thành công");
         return "redirect:/admin/phong";
     }
+
+    //////////////////////////////// DELETE PHONG ////////////////////////////////
+    @GetMapping("/admin/phong/xoaphong/{maPhong}")
+    public String getXoaPhong(@PathVariable String maPhong, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Phong> phongOptional = phongService.findPhongById(maPhong);
+
+        if (phongOptional.isPresent()) {
+            // Check if the room is in use
+            if (phongService.isPhongInUse(maPhong)) {
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "Không thể xóa phòng vì phòng đang được sử dụng trong hợp đồng.");
+                return "redirect:/admin/phong";
+            }
+
+            model.addAttribute("phong", phongOptional.get());
+            return "admin/phong/xoa-phong";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
+            return "redirect:/admin/phong";
+        }
+    }
+
+    @PostMapping("/admin/phong/xoaphong/{maPhong}")
+    public String postXoaPhong(@PathVariable String maPhong, RedirectAttributes redirectAttributes) {
+        if (!phongService.existsById(maPhong)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
+            return "redirect:/admin/phong";
+        }
+
+        if (phongService.isPhongInUse(maPhong)) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Không thể xóa phòng vì phòng đang được sử dụng trong hợp đồng.");
+            return "redirect:/admin/phong";
+        }
+
+        try {
+            phongService.deletePhong(maPhong);
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa phòng thành công");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa phòng: " + e.getMessage());
+        }
+
+        return "redirect:/admin/phong";
+    }
 }
