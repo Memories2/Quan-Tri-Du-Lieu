@@ -8,6 +8,8 @@ import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.repository.LoaiPhongRepository;
 import vn.project.quanlykytucxa.repository.PhongRepository;
 
+import java.util.Optional;
+
 @Service
 public class PhongService {
 
@@ -29,6 +31,10 @@ public class PhongService {
             }
         }
         phongRepository.save(phong);
+    }
+
+    public Optional<Phong> findPhongById(String maPhong) {
+        return phongRepository.findById(maPhong);
     }
 
     public LoaiPhong getLoaiPhongByMaLoaiPhong(String maLoaiPhong) {
