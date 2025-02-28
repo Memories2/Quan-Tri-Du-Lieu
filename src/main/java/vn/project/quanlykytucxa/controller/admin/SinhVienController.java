@@ -1,4 +1,4 @@
-package vn.project.quanlykytucxa.controller;
+package vn.project.quanlykytucxa.controller.admin;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

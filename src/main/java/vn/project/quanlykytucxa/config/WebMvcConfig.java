@@ -23,11 +23,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         bean.setSuffix(".jsp");
         return bean;
     }
+    
 
     // 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(viewResolver());
+        registry.order(1); // Thứ tự ưu tiên của ViewResolver
     }
     
     // Cấu hình để sử dụng các file nguồn tĩnh (html, image, ..)

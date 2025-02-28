@@ -93,7 +93,7 @@
 			<version>8.0.1.Final</version>
 		</dependency>
 
-		<!--Spring session-->
+		<!-- Spring session-->
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-jdbc</artifactId>
