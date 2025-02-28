@@ -8,10 +8,12 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Quản lý ký túc xá" />
+                <meta name="description" content="Dự án laptopshop" />
                 <meta name="author" content="" />
                 <title>Tạo mới phòng</title>
-
+                <link href="/css/styles.css" rel="stylesheet" />
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
 
             <body class="sb-nav-fixed">
@@ -68,8 +70,7 @@
 
                                                 <div class="col-12 mb-5">
                                                     <label class="form-label">Tình Trạng</label>
-                                                    <form:input type="text" class="form-control"
-                                                        path="tinhTrang" />
+                                                    <form:input type="text" class="form-control" path="tinhTrang" />
 
                                                 </div>
 
