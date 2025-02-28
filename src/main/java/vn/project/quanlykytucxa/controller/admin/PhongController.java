@@ -27,8 +27,29 @@ public class PhongController {
         this.phongService = phongService;
     }
 
-    //////////////////////////////// XEM CHI TIET PHONG
-    //////////////////////////////// ////////////////////////////////
+    //////////////////////////////// DANH SÁCH PHÒNG ////////////////////////////////
+    @GetMapping("/admin/phong")
+    public String getDanhSachPhong(Model model) {
+        List<Phong> danhSachPhong = phongService.findAllPhong();
+        model.addAttribute("danhSachPhong", danhSachPhong);
+        return "admin/phong/danh-sach-phong";
+    }
+
+    //////////////////////////////// XEM CHI TIẾT PHÒNG ////////////////////////////////
+    @GetMapping("/admin/phong/chitiet/{maPhong}")
+    public String getChiTietPhong(@PathVariable String maPhong, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Phong> phongOptional = phongService.findPhongById(maPhong);
+        
+        if (phongOptional.isPresent()) {
+            model.addAttribute("phong", phongOptional.get());
+            return "admin/phong/chi-tiet-phong";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
+            return "redirect:/admin/phong";
+        }
+    }
+
+    //////////////////////////////// XEM CHI TIET PHONG //////////////////////////////// ////////////////////////////////
     //////////////////////////////// ////////////////////////////////
 
     @GetMapping("/admin/phong/chitietphong")

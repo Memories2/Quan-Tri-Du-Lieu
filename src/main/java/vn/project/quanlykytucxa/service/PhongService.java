@@ -9,6 +9,7 @@ import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.repository.LoaiPhongRepository;
 import vn.project.quanlykytucxa.repository.PhongRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,5 +67,9 @@ public class PhongService {
 
     public int countPhong() {
         return (int) phongRepository.count();
+    }
+
+    public List<Phong> findAllPhong() {
+        return phongRepository.findAll();
     }
 }
