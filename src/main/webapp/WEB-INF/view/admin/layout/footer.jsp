@@ -6,7 +6,7 @@
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy; </div>
                     <div>
-                        <a href="#" target="_blank">Niên Luận Cơ sở</a>
+                        <a href="#" target="_blank">Quản Trị Giữ Liệu</a>
                         &middot;
                         <a href="#" target="_blank">Sever side renaring</a>
                     </div>

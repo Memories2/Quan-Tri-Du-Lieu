@@ -82,4 +82,9 @@ public class SinhVienService {
 		}
 		return svms;
 	}
+
+	@Transactional(readOnly = true)
+	public int countSinhVien() {
+		return sinhVienRepository.countSinhVien();
+	}
 }

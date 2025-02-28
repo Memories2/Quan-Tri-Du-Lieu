@@ -5,30 +5,31 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Features</div>
+
                         <a class="nav-link" href="/admin">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
 
-                        <a class="nav-link" href="/admin/user">
+                        <a class="nav-link" href="/admin/phong">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            User
+                            Phòng
                         </a>
 
-                        <a class="nav-link" href="/admin/product">
+                        <a class="nav-link" href="/admin/hoadon">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Product
+                            Hoá Đơn
                         </a>
 
-                        <a class="nav-link" href="/admin/order">
+                        <a class="nav-link" href="/admin/hopdong">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Order
+                            Hợp Đồng
                         </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-    
+
                 </div>
             </nav>
         </div>
