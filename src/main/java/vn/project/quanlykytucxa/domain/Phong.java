@@ -31,7 +31,9 @@ public class Phong {
 	private TinhTrangPhong tinhTrang = TinhTrangPhong.TRONG;
 
 	public enum TinhTrangPhong {
-		TRONG, DAY
+		TRONG,  // Empty
+		DAY,    // Full
+		SUACHUA // 
 	}
 
 	public Phong() {
