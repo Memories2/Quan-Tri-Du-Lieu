@@ -17,10 +17,13 @@
             <body class="sb-nav-fixed">
 
                 <!--Header-->
+                <jsp:include page="../layout/header.jsp" />
+
                 <div id="layoutSidenav">
 
                     <!--Sidebar-->
-                    
+                    <jsp:include page="../layout/sidebar.jsp" />
+
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
@@ -75,18 +78,22 @@
                                                     <a href="/admin/phong" class="btn btn-secondary">Hủy</a>
                                                 </div>
 
-                                                
-
                                             </form:form>
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </main>
                         <!--Footer-->
-
+                        <jsp:include page="../layout/footer.jsp" />
                     </div>
                 </div>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                    crossorigin="anonymous"></script>
+                <script src="/js/scripts.js"></script>
+
 
             </body>
 
