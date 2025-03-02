@@ -14,22 +14,17 @@ import vn.project.quanlykytucxa.DTO.SearchSVDTO;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
 
+
 @Controller
 public class SinhVienController {
 
 	@Autowired
 	private SinhVienService sinhVienService;
 
-	@GetMapping("/sinhvien/tiemkiem")
+	@GetMapping("/admin/sinhvien/tiemkiem")
 	public String timKiemSinhVien(@ModelAttribute SearchSVDTO searchDTO, Model model) {
 
 		List<SinhVienIndexViewModel> danhSachSV = new ArrayList<>();
-
-		if (hasNonEmptyField(searchDTO)) {
-			danhSachSV = sinhVienService.getDanhSachSinhVien();
-			model.addAttribute("sinhVienList", danhSachSV);
-			return "/view/admin/sinhvien/index";
-		}
 
 		// Tìm theo mã sinh viên
 		if (searchDTO.getMasv() != null && !searchDTO.getMasv().trim().isEmpty()) {
@@ -73,7 +68,11 @@ public class SinhVienController {
 		}
 
 		model.addAttribute("sinhVienList", danhSachSV);
-		return "/view/admin/sinhvien/index";
+		 model.addAttribute("masv", searchDTO.getMasv());
+	        model.addAttribute("tenSV", searchDTO.getTenSV());
+	        model.addAttribute("maPhong", searchDTO.getMaPhong());
+	        model.addAttribute("soDienThoai",searchDTO.getSoDienThoai());
+		return "/admin/sinhvien/index";
 	}
 
 	public static boolean hasNonEmptyField(Object dto) {
@@ -94,11 +93,11 @@ public class SinhVienController {
 		return false; // Tất cả đều rỗng hoặc null
 	}
 
-	@GetMapping("/sinhvien")
+	@GetMapping("/admin/sinhvien")
 	public String getAllSinhVien(Model model) {
 		List<SinhVienIndexViewModel> indexViewModels = sinhVienService.getDanhSachSinhVien();
 
 		model.addAttribute("sinhVienList", indexViewModels);
-		return "/view/admin/sinhvien/index";
+		return "/admin/sinhvien/index";
 	}
 }
