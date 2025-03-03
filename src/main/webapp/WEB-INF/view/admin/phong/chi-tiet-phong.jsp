@@ -100,7 +100,29 @@
                                                         <h5 class="mb-0">Danh sách sinh viên trong phòng</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        <p>Chức năng đang được phát triển...</p>
+														<table class="table table-bordered table-hover mt-3">
+														                <thead class="table-dark">
+														                    <tr>
+														                        <th>Mã SV</th>
+														                        <th>Họ Tên</th>
+														                        <th>Số Điện Thoại</th>
+														                    </tr>
+														                </thead>
+														                <tbody>
+														                    <c:forEach var="sinhVien" items="${sinhVienList}">
+														                        <tr>
+														                            <td>${sinhVien.maSV}</td>
+														                            <td>${sinhVien.hoTen}</td>
+														                            <td>${sinhVien.soDienThoai}</td>
+														                        </tr>
+														                    </c:forEach>
+														                    <c:if test="${empty sinhVienList}">
+														                        <tr>
+														                            <td colspan="4" class="text-center text-danger">Không tồn tại sinh viên có thông tin như trên</td>
+														                        </tr>
+														                    </c:if>
+														                </tbody>
+														            </table>
                                                         <!-- Hiển thị danh sách sinh viên nếu có -->
                                                     </div>
                                                 </div>
