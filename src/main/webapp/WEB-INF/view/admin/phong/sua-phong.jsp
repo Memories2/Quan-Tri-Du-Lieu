@@ -40,6 +40,27 @@
                                         <div class="col-md-6 col-12 mx-auto">
                                             <h3>Chỉnh sửa thông tin phòng ${phong.maPhong}</h3>
                                             <hr />
+
+                                            <!-- Success message -->
+                                            <c:if test="${not empty successMessage}">
+                                                <div class="alert alert-success alert-dismissible fade show"
+                                                    role="alert">
+                                                    ${successMessage}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                            </c:if>
+
+                                            <!-- Error message -->
+                                            <c:if test="${not empty errorMessage}">
+                                                <div class="alert alert-danger alert-dismissible fade show"
+                                                    role="alert">
+                                                    ${errorMessage}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                            </c:if>
+
                                             <form:form method="post" action="/admin/phong/suaphong/${phong.maPhong}"
                                                 modelAttribute="phong" class="row">
 
@@ -47,27 +68,36 @@
                                                     <label class="form-label">Mã phòng:</label>
                                                     <form:input type="text" class="form-control" path="maPhong"
                                                         readonly="true" />
+                                                    <form:errors path="maPhong" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Số phòng:</label>
                                                     <form:input type="text" class="form-control" path="soPhong" />
+                                                    <form:errors path="soPhong" cssClass="invalid-feedback d-block" />
+                                                    <small class="form-text text-muted">Số phòng hiển thị cho người
+                                                        dùng</small>
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Loại phòng:</label>
                                                     <form:select class="form-select" path="loaiPhong.maLoaiPhong">
-                                                        <form:option value="2">Phòng 2</form:option>
-                                                        <form:option value="4">Phòng 4</form:option>
-                                                        <form:option value="6">Phòng 6</form:option>
-                                                        <form:option value="8">Phòng 8</form:option>
+                                                        <form:option value="">-- Chọn loại phòng --</form:option>
+                                                        <form:option value="LP001">Phòng đơn</form:option>
+                                                        <form:option value="LP002">Phòng 2</form:option>
+                                                        <form:option value="LP004">Phòng 4</form:option>
+                                                        <form:option value="LP006">Phòng 6</form:option>
+                                                        <form:option value="LP008">Phòng 8</form:option>
                                                     </form:select>
+                                                    <form:errors path="loaiPhong" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Số lượng tối đa:</label>
-                                                    <form:input type="number" class="form-control"
+                                                    <form:input type="number" class="form-control" min="1"
                                                         path="soLuongToiDa" />
+                                                    <form:errors path="soLuongToiDa"
+                                                        cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="col-12 mb-5">
@@ -75,7 +105,9 @@
                                                     <form:select class="form-select" path="tinhTrang">
                                                         <form:option value="TRONG">Trống</form:option>
                                                         <form:option value="DAY">Đầy</form:option>
+                                                        <form:option value="SUACHUA">Sửa chữa</form:option>
                                                     </form:select>
+                                                    <form:errors path="tinhTrang" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="col-12 mb-5">

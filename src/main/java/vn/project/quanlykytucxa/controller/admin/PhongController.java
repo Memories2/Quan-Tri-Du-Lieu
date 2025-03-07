@@ -146,21 +146,57 @@ public class PhongController {
 	}
 
 	@PostMapping("/admin/phong/suaphong/{maPhong}")
-	public String postSuaPhong(@PathVariable String maPhong, @ModelAttribute("phong") Phong phong,
-			RedirectAttributes redirectAttributes) {
-		// Ensure we're updating the correct phong
-		phong.setMaPhong(maPhong);
-
-		// Set the loaiPhong object from its ID
-		phong.setLoaiPhong(this.phongService.getLoaiPhongByMaLoaiPhong(phong.getLoaiPhong().getMaLoaiPhong()));
-
-		// Save the updated phong
-		this.phongService.handleSavePhong(phong);
-
-		redirectAttributes.addFlashAttribute("successMessage", "Cập nhật phòng thành công");
-		return "redirect:/admin/phong";
-	}
-
+	public String postSuaPhong(@PathVariable String maPhong, 
+                          @Valid @ModelAttribute("phong") Phong phong,
+                          BindingResult bindingResult,
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
+    // Kiểm tra xem phòng có tồn tại không
+    if (!phongService.existsById(maPhong)) {
+        redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
+        return "redirect:/admin/phong";
+    }
+    
+    // Đảm bảo đang cập nhật đúng phòng
+    phong.setMaPhong(maPhong);
+    
+    // Kiểm tra loại phòng
+    if (phong.getLoaiPhong() == null || phong.getLoaiPhong().getMaLoaiPhong() == null
+            || phong.getLoaiPhong().getMaLoaiPhong().isEmpty()) {
+        bindingResult.rejectValue("loaiPhong", "required", "Loại phòng không được để trống");
+    }
+    
+    // Nếu có lỗi validation
+    if (bindingResult.hasErrors()) {
+        return "admin/phong/sua-phong";
+    }
+    
+    try {
+        // Lấy đối tượng loại phòng đầy đủ từ ID
+        LoaiPhong loaiPhong = phongService.getLoaiPhongByMaLoaiPhong(phong.getLoaiPhong().getMaLoaiPhong());
+        if (loaiPhong == null) {
+            bindingResult.rejectValue("loaiPhong", "invalid", "Loại phòng không hợp lệ");
+            return "admin/phong/sua-phong";
+        }
+        
+        phong.setLoaiPhong(loaiPhong);
+        
+        // Kiểm tra logic nghiệp vụ thêm (ví dụ: nếu phòng đang có người ở)
+        if (phongService.isPhongInUse(maPhong)) {
+            // Có thể thêm kiểm tra không cho phép đổi loại phòng hoặc giảm số lượng tối đa
+            // nếu số người hiện tại vượt quá giới hạn mới
+        }
+        
+        // Lưu phòng đã cập nhật
+        phongService.handleSavePhong(phong);
+        
+        redirectAttributes.addFlashAttribute("successMessage", "Cập nhật phòng thành công");
+        return "redirect:/admin/phong";
+    } catch (Exception e) {
+        bindingResult.reject("saveError", "Lỗi khi cập nhật phòng: " + e.getMessage());
+        return "admin/phong/sua-phong";
+    }
+}
 	//////////////////////////////// DELETE PHONG ////////////////////////////////
 	@GetMapping("/admin/phong/xoaphong/{maPhong}")
 	public String getXoaPhong(@PathVariable String maPhong, Model model, RedirectAttributes redirectAttributes) {
