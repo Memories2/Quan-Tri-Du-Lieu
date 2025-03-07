@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import vn.project.quanlykytucxa.domain.LoaiPhong;
 import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
+
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class PhongController {
@@ -50,7 +54,7 @@ public class PhongController {
 				System.out.println(sv.toString());
 			}
 			model.addAttribute("sinhVienList", danhSachSV);
-			
+
 			// Kết thúc danh sách dinh viên trong phòng
 
 			model.addAttribute("phong", phongOptional.get());
@@ -61,7 +65,7 @@ public class PhongController {
 		}
 	}
 
-	//////////////////////////////// XEM CHI TIET PHONG
+	//////////////////////////////// XEM CHI TIẾT PHÒNG
 	//////////////////////////////// ////////////////////////////////
 	//////////////////////////////// ////////////////////////////////
 	//////////////////////////////// ////////////////////////////////
@@ -80,13 +84,51 @@ public class PhongController {
 	}
 
 	@PostMapping("/admin/phong/taophong")
-	public String postTaoPhong(Model model, @ModelAttribute("newPhong") Phong newPhong) {
+	public String postTaoPhong(Model model, @Valid @ModelAttribute("newPhong") Phong newPhong,
+			BindingResult bindingResult) {
 
-		newPhong.setLoaiPhong(this.phongService.getLoaiPhongByMaLoaiPhong(newPhong.getLoaiPhong().getMaLoaiPhong()));
-		// save phong
-		this.phongService.handleSavePhong(newPhong);
+		// Custom validation
+		if (phongService.existsById(newPhong.getMaPhong())) {
+			bindingResult.rejectValue("maPhong", "duplicate", "Mã phòng đã tồn tại");
+		}
 
-		return "redirect:/admin/phong/taophong";
+		// Add specific validation for loaiPhong
+		if (newPhong.getLoaiPhong() == null || newPhong.getLoaiPhong().getMaLoaiPhong() == null
+				|| newPhong.getLoaiPhong().getMaLoaiPhong().isEmpty()) {
+			bindingResult.rejectValue("loaiPhong", "required", "Loại phòng không được để trống");
+		}
+
+		// Check if there are validation errors
+		if (bindingResult.hasErrors()) {
+			return "admin/phong/tao-phong";
+		}
+
+		try {
+			// Set the loaiPhong object from its ID
+			LoaiPhong loaiPhong = phongService.getLoaiPhongByMaLoaiPhong(newPhong.getLoaiPhong().getMaLoaiPhong());
+			if (loaiPhong == null) {
+				bindingResult.rejectValue("loaiPhong", "invalid", "Loại phòng không hợp lệ");
+				return "admin/phong/tao-phong";
+			}
+
+			newPhong.setLoaiPhong(loaiPhong);
+
+			// Set enum value for tinhTrang if coming as string
+			if (newPhong.getTinhTrang() == null) {
+				newPhong.setTinhTrang(Phong.TinhTrangPhong.TRONG); // Default value
+			}
+
+			// Save phong
+			phongService.handleSavePhong(newPhong);
+
+			model.addAttribute("successMessage", "Tạo phòng mới thành công!");
+			model.addAttribute("newPhong", new Phong());
+			return "admin/phong/tao-phong";
+
+		} catch (Exception e) {
+			bindingResult.reject("saveError", "Lỗi khi lưu phòng: " + e.getMessage());
+			return "admin/phong/tao-phong";
+		}
 	}
 
 	//////////////////////////////// EDIT PHONG ////////////////////////////////

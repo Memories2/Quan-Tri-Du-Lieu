@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+        <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
             <!DOCTYPE html>
             <html lang="vi">
 
@@ -39,39 +40,63 @@
                                         <div class="col-md-6 col-12 mx-auto">
                                             <h3>Thêm phòng mới</h3>
                                             <hr />
+
+                                            <!-- Success message -->
+                                            <c:if test="${not empty successMessage}">
+                                                <div class="alert alert-success alert-dismissible fade show"
+                                                    role="alert">
+                                                    ${successMessage}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                            </c:if>
+
                                             <form:form method="post" action="/admin/phong/taophong"
                                                 modelAttribute="newPhong" class="row" enctype="multipart/form-data">
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Mã phòng:</label>
                                                     <form:input type="text" class="form-control" path="maPhong" />
+                                                    <form:errors path="maPhong" cssClass="invalid-feedback d-block" />
+                                                    <small class="form-text text-muted">Định dạng: 1 chữ cái viết hoa và
+                                                        3 số (vd: A101)</small>
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Số phòng:</label>
                                                     <form:input type="text" class="form-control" path="soPhong" />
+                                                    <form:errors path="soPhong" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Loại phòng:</label>
                                                     <form:select class="form-select" path="loaiPhong.maLoaiPhong">
-                                                        <form:option value="2">Phòng 2</form:option>
-                                                        <form:option value="4">Phòng 4</form:option>
-                                                        <form:option value="6">Phòng 6</form:option>
-                                                        <form:option value="8">Phòng 8</form:option>
+                                                        <form:option value="">-- Chọn loại phòng --</form:option>
+                                                        <form:option value="LP001">Phòng đơn</form:option>
+                                                        <form:option value="LP002">Phòng 2</form:option>
+                                                        <form:option value="LP004">Phòng 4</form:option>
+                                                        <form:option value="LP006">Phòng 6</form:option>
+                                                        <form:option value="LP008">Phòng 8</form:option>
                                                     </form:select>
+                                                    <form:errors path="loaiPhong" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Số lượng tối đa:</label>
-                                                    <form:input type="number" class="form-control"
-                                                        path="soLuongToiDa" />
+                                                    <form:input type="number" class="form-control" path="soLuongToiDa"
+                                                        min="1" />
+                                                    <form:errors path="soLuongToiDa"
+                                                        cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="col-12 mb-5">
                                                     <label class="form-label">Tình Trạng</label>
-                                                    <form:input type="text" class="form-control" path="tinhTrang" />
-
+                                                    <form:select class="form-select" path="tinhTrang">
+                                                        <form:option value="TRONG">Trống</form:option>
+                                                        <form:option value="DAY">Đầy</form:option>
+                                                        <form:option value="SUACHUA">Sửa chữa</form:option>
+                                                    </form:select>
+                                                    <form:errors path="tinhTrang" cssClass="invalid-feedback d-block" />
                                                 </div>
 
                                                 <div class="col-12 mb-5">
@@ -80,9 +105,7 @@
                                                 </div>
 
                                             </form:form>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -94,8 +117,6 @@
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>
                 <script src="/js/scripts.js"></script>
-
-
             </body>
 
             </html>
