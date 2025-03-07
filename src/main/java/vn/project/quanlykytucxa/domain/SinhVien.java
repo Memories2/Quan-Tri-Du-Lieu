@@ -31,6 +31,9 @@ public class SinhVien {
 		NAM, NU, KHAC
 	}
 
+	@Column
+    private String role;
+
 	public SinhVien() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -49,6 +52,10 @@ public class SinhVien {
 		return maSV;
 	}
 
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 	public void setMaSV(String maSV) {
 		this.maSV = maSV;
 	}
@@ -100,6 +107,10 @@ public class SinhVien {
 			return false;
 		SinhVien other = (SinhVien) obj;
 		return Objects.equals(maSV, other.maSV);
+	}
+
+	public String getRole() {
+		return role;
 	}
 
 }

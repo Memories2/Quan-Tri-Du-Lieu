@@ -29,4 +29,6 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 	@Query("SELECT COUNT(s) FROM SinhVien s")
 	int countSinhVien();
 
+	
+
 }

@@ -3,23 +3,23 @@
 use quanlykytucxa;
 
 -- Bảng sinh_vien
-INSERT INTO `quanlykytucxa`.`sinh_vien` (`masv`, `so_dien_thoai`, `ho_ten`, `mat_khau`, `gioi_tinh`) VALUES
-('SV016', '0901234565', 'Nguyen Van 16', 'matkhau1', 'Nam'),
-('SV001', '0901234567', 'Nguyen Van A', 'matkhau1', 'Nam'),
-('SV002', '0912345678', 'Tran Thi B', 'matkhau2', 'Nữ'),
-('SV003', '0923456789', 'Le Van C', 'matkhau3', 'Nam'),
-('SV004', '0934567890', 'Pham Thi D', 'matkhau4', 'Nữ'),
-('SV005', '0945678901', 'Bui Van E', 'matkhau5', 'Nam'),
-('SV006', '0956789012', 'Do Thi F', 'matkhau6', 'Nữ'),
-('SV007', '0967890123', 'Hoang Van G', 'matkhau7', 'Nam'),
-('SV008', '0978901234', 'Dang Thi H', 'matkhau8', 'Nữ'),
-('SV009', '0989012345', 'Vo Van I', 'matkhau9', 'Nam'),
-('SV010', '0990123456', 'Ngo Thi J', 'matkhau10', 'Nữ'),
-('SV011', '0901122334', 'Pham Van K', 'matkhau11', 'Nam'),
-('SV012', '0911223344', 'Tran Thi L', 'matkhau12', 'Nữ'),
-('SV013', '0922334455', 'Le Van M', 'matkhau13', 'Nam'),
-('SV014', '0933445566', 'Nguyen Thi N', 'matkhau14', 'Nữ'),
-('SV015', '0944556677', 'Bui Van O', 'matkhau15', 'Nam');
+INSERT INTO `quanlykytucxa`.`sinh_vien` (`masv`, `so_dien_thoai`, `ho_ten`, `mat_khau`, `gioi_tinh`, `role`) VALUES
+('SV016', '0901234565', 'Nguyen Van 16', 'matkhau1', 'Nam', 'admin'),
+('SV001', '0901234567', 'Nguyen Van A', 'matkhau1', 'Nam', 'user'),
+('SV002', '0912345678', 'Tran Thi B', 'matkhau2', 'Nữ', 'user'),
+('SV003', '0923456789', 'Le Van C', 'matkhau3', 'Nam', 'user'),
+('SV004', '0934567890', 'Pham Thi D', 'matkhau4', 'Nữ', 'user'),
+('SV005', '0945678901', 'Bui Van E', 'matkhau5', 'Nam', 'user'),
+('SV006', '0956789012', 'Do Thi F', 'matkhau6', 'Nữ', 'user'),
+('SV007', '0967890123', 'Hoang Van G', 'matkhau7', 'Nam', 'user'),
+('SV008', '0978901234', 'Dang Thi H', 'matkhau8', 'Nữ', 'user'),
+('SV009', '0989012345', 'Vo Van I', 'matkhau9', 'Nam', 'user'),
+('SV010', '0990123456', 'Ngo Thi J', 'matkhau10', 'Nữ', 'user'),
+('SV011', '0901122334', 'Pham Van K', 'matkhau11', 'Nam', 'user'),
+('SV012', '0911223344', 'Tran Thi L', 'matkhau12', 'Nữ', 'user'),
+('SV013', '0922334455', 'Le Van M', 'matkhau13', 'Nam', 'user'),
+('SV014', '0933445566', 'Nguyen Thi N', 'matkhau14', 'Nữ', 'user'),
+('SV015', '0944556677', 'Bui Van O', 'matkhau15', 'Nam', 'user');
 
 -- Bảng dich_vu
 INSERT INTO `quanlykytucxa`.`dich_vu` (`don_gia`, `madv`, `ten_dich_vu`) VALUES
@@ -42,20 +42,10 @@ INSERT INTO `quanlykytucxa`.`dich_vu` (`don_gia`, `madv`, `ten_dich_vu`) VALUES
 -- Bảng loai_phong
 INSERT INTO `quanlykytucxa`.`loai_phong` (`gia_thue`, `ma_loai_phong`, `ten_loai_phong`) VALUES
 (2000000, 'LP001', 'Phòng đơn'),
-(1500000, 'LP002', 'Phòng đôi'),
-(1200000, 'LP003', 'Phòng ba'),
-(1800000, 'LP004', 'Phòng bốn'),
-(2200000, 'LP005', 'Phòng VIP'),
-(1400000, 'LP006', 'Phòng bình dân'),
-(2500000, 'LP007', 'Phòng cao cấp'),
-(1300000, 'LP008', 'Phòng nhóm'),
-(1100000, 'LP009', 'Phòng sinh viên'),
-(2700000, 'LP010', 'Phòng thượng hạng'),
-(2000000, 'LP011', 'Phòng hiện đại'),
-(1600000, 'LP012', 'Phòng cũ'),
-(3000000, 'LP013', 'Phòng siêu cấp'),
-(1700000, 'LP014', 'Phòng tập thể'),
-(2600000, 'LP015', 'Phòng view đẹp');
+(1800000, 'LP002', 'Phòng đôi'),
+(1600000, 'LP004', 'Phòng bốn'),
+(1400000, 'LP006', 'Phòng sáu'),
+(1200000, 'LP008','Phòng tám');
 
 -- Bảng phong
 INSERT INTO `quanlykytucxa`.`phong` (`ma_loai_phong`, `ma_phong`, `so_luong_toi_da`, `so_phong`, `tinh_trang`) VALUES
