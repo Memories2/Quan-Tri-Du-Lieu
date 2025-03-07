@@ -46,24 +46,23 @@ INSERT INTO `quanlykytucxa`.`loai_phong` (`gia_thue`, `ma_loai_phong`, `ten_loai
 (1600000, 'LP004', 'Phòng bốn'),
 (1400000, 'LP006', 'Phòng sáu'),
 (1200000, 'LP008','Phòng tám');
-
 -- Bảng phong
 INSERT INTO `quanlykytucxa`.`phong` (`ma_loai_phong`, `ma_phong`, `so_luong_toi_da`, `so_phong`, `tinh_trang`) VALUES
 ('LP001', 'P001', 1, 101, 'Trống'),
 ('LP002', 'P002', 2, 102, 'Đầy'),
-('LP003', 'P003', 3, 103, 'Trống'),
+('LP001', 'P003', 1, 103, 'Trống'),
 ('LP004', 'P004', 4, 104, 'Đầy'),
-('LP005', 'P005', 1, 105, 'Trống'),
-('LP006', 'P006', 2, 106, 'Đầy'),
-('LP007', 'P007', 3, 107, 'Trống'),
-('LP008', 'P008', 4, 108, 'Đầy'),
-('LP009', 'P009', 1, 109, 'Trống'),
-('LP010', 'P010', 2, 110, 'Đầy'),
-('LP011', 'P011', 3, 111, 'Trống'),
-('LP012', 'P012', 4, 112, 'Đầy'),
-('LP013', 'P013', 1, 113, 'Trống'),
-('LP014', 'P014', 2, 114, 'Đầy'),
-('LP015', 'P015', 3, 115, 'Trống');
+('LP001', 'P005', 1, 105, 'Trống'),
+('LP006', 'P006', 6, 106, 'Đầy'),
+('LP002', 'P007', 2, 107, 'Trống'),
+('LP008', 'P008', 8, 108, 'Đầy'),
+('LP001', 'P009', 1, 109, 'Trống'),
+('LP002', 'P010', 2, 110, 'Đầy'),
+('LP004', 'P011', 4, 111, 'Trống'),
+('LP006', 'P012', 6, 112, 'Đầy'),
+('LP001', 'P013', 1, 113, 'Trống'),
+('LP008', 'P014', 8, 114, 'Đầy'),
+('LP008', 'P015', 3, 115, 'Trống');
 
 -- Bảng hop_dong
 INSERT INTO `quanlykytucxa`.`hop_dong` (`ma_phong`, `mahd`, `ngay_bat_dau`, `ngay_ket_thuc`, `masv`) VALUES

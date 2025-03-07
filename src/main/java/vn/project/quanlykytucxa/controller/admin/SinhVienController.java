@@ -14,7 +14,6 @@ import vn.project.quanlykytucxa.DTO.SearchSVDTO;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
 
-
 @Controller
 public class SinhVienController {
 
@@ -68,10 +67,10 @@ public class SinhVienController {
 		}
 
 		model.addAttribute("sinhVienList", danhSachSV);
-		 model.addAttribute("masv", searchDTO.getMasv());
-	        model.addAttribute("tenSV", searchDTO.getTenSV());
-	        model.addAttribute("maPhong", searchDTO.getMaPhong());
-	        model.addAttribute("soDienThoai",searchDTO.getSoDienThoai());
+		model.addAttribute("masv", searchDTO.getMasv());
+		model.addAttribute("tenSV", searchDTO.getTenSV());
+		model.addAttribute("maPhong", searchDTO.getMaPhong());
+		model.addAttribute("soDienThoai", searchDTO.getSoDienThoai());
 		return "/admin/sinhvien/index";
 	}
 
@@ -98,6 +97,6 @@ public class SinhVienController {
 		List<SinhVienIndexViewModel> indexViewModels = sinhVienService.getDanhSachSinhVien();
 
 		model.addAttribute("sinhVienList", indexViewModels);
-		return "/admin/sinhvien/index";
+		return "admin/sinhvien/index";
 	}
 }
