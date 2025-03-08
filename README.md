@@ -17,8 +17,8 @@ Học kỳ 2, Năm học 2024-2025
 
 **Họ tên SV 3**: Đỗ Quang Huy
 
-**MSSV 4**:
+**MSSV 4**: B2205878
 
-**Họ tên SV 4**:
+**Họ tên SV 4**: Bành Nhật Khang
 
 **Lớp học phần**: 
