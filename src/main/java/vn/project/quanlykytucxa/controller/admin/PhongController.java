@@ -145,58 +145,77 @@ public class PhongController {
 		}
 	}
 
-	@PostMapping("/admin/phong/suaphong/{maPhong}")
-	public String postSuaPhong(@PathVariable String maPhong, 
-                          @Valid @ModelAttribute("phong") Phong phong,
-                          BindingResult bindingResult,
-                          Model model,
-                          RedirectAttributes redirectAttributes) {
-    // Kiểm tra xem phòng có tồn tại không
-    if (!phongService.existsById(maPhong)) {
-        redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
-        return "redirect:/admin/phong";
-    }
-    
-    // Đảm bảo đang cập nhật đúng phòng
-    phong.setMaPhong(maPhong);
-    
-    // Kiểm tra loại phòng
-    if (phong.getLoaiPhong() == null || phong.getLoaiPhong().getMaLoaiPhong() == null
-            || phong.getLoaiPhong().getMaLoaiPhong().isEmpty()) {
-        bindingResult.rejectValue("loaiPhong", "required", "Loại phòng không được để trống");
-    }
-    
-    // Nếu có lỗi validation
-    if (bindingResult.hasErrors()) {
-        return "admin/phong/sua-phong";
-    }
-    
-    try {
-        // Lấy đối tượng loại phòng đầy đủ từ ID
-        LoaiPhong loaiPhong = phongService.getLoaiPhongByMaLoaiPhong(phong.getLoaiPhong().getMaLoaiPhong());
-        if (loaiPhong == null) {
-            bindingResult.rejectValue("loaiPhong", "invalid", "Loại phòng không hợp lệ");
-            return "admin/phong/sua-phong";
-        }
-        
-        phong.setLoaiPhong(loaiPhong);
-        
-        // Kiểm tra logic nghiệp vụ thêm (ví dụ: nếu phòng đang có người ở)
-        if (phongService.isPhongInUse(maPhong)) {
-            // Có thể thêm kiểm tra không cho phép đổi loại phòng hoặc giảm số lượng tối đa
-            // nếu số người hiện tại vượt quá giới hạn mới
-        }
-        
-        // Lưu phòng đã cập nhật
-        phongService.handleSavePhong(phong);
-        
-        redirectAttributes.addFlashAttribute("successMessage", "Cập nhật phòng thành công");
-        return "redirect:/admin/phong";
-    } catch (Exception e) {
-        bindingResult.reject("saveError", "Lỗi khi cập nhật phòng: " + e.getMessage());
-        return "admin/phong/sua-phong";
-    }
+@PostMapping("/admin/phong/suaphong/{maPhong}")
+public String postSuaPhong(@PathVariable String maPhong,
+		@Valid @ModelAttribute("phong") Phong phong,
+		BindingResult bindingResult,
+		Model model,
+		RedirectAttributes redirectAttributes) {
+	// Kiểm tra xem phòng có tồn tại không
+	if (!phongService.existsById(maPhong)) {
+		redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
+		return "redirect:/admin/phong";
+	}
+
+	// Đảm bảo đang cập nhật đúng phòng
+	phong.setMaPhong(maPhong);
+
+	// Kiểm tra loại phòng
+	if (phong.getLoaiPhong() == null || phong.getLoaiPhong().getMaLoaiPhong() == null
+			|| phong.getLoaiPhong().getMaLoaiPhong().isEmpty()) {
+		bindingResult.rejectValue("loaiPhong", "required", "Loại phòng không được để trống");
+	}
+
+	// lấy số lượng tối của loại phòng
+	int maxMember = 0;
+	if (phong.getLoaiPhong().getMaLoaiPhong().equals("LP001")) {
+		maxMember = 1;
+	} else if (phong.getLoaiPhong().getMaLoaiPhong().equals("LP002")) {
+		maxMember = 2;
+	} else if (phong.getLoaiPhong().getMaLoaiPhong().equals("LP004")) {
+		maxMember = 4;
+	} else if (phong.getLoaiPhong().getMaLoaiPhong().equals("LP006")) {
+		maxMember = 6;
+	} else if (phong.getLoaiPhong().getMaLoaiPhong().equals("LP008")) {
+		maxMember = 8;
+	}
+
+	if (phong.getSoLuongToiDa() > maxMember) {
+		bindingResult.rejectValue("soLuongToiDa", "invalid", "Số lượng tối đa không hợp lệ");
+	}
+
+	// Nếu có lỗi validation
+	if (bindingResult.hasErrors()) {
+		return "admin/phong/sua-phong";
+	}
+
+	try {
+		// Lấy đối tượng loại phòng đầy đủ từ ID
+		LoaiPhong loaiPhong = phongService.getLoaiPhongByMaLoaiPhong(phong.getLoaiPhong().getMaLoaiPhong());
+		if (loaiPhong == null) {
+			bindingResult.rejectValue("loaiPhong", "invalid", "Loại phòng không hợp lệ");
+			return "admin/phong/sua-phong";
+		}
+
+		phong.setLoaiPhong(loaiPhong);
+
+		// Kiểm tra logic nghiệp vụ thêm (ví dụ: nếu phòng đang có người ở)
+		if (phongService.isPhongInUse(maPhong)) {
+			// Có thể thêm kiểm tra không cho phép đổi loại phòng hoặc giảm số lượng tối đa
+			// nếu số người hiện tại vượt quá giới hạn mới
+		}
+
+		// Lưu phòng đã cập nhật
+		phongService.handleSavePhong(phong);
+
+		redirectAttributes.addFlashAttribute("successMessage", "Cập nhật phòng thành công");
+		return "redirect:/admin/phong";
+	} catch (Exception e) {
+		bindingResult.reject("saveError", "Lỗi khi cập nhật phòng: " + e.getMessage());
+		return "admin/phong/sua-phong";
+	}
 }
+
 	//////////////////////////////// DELETE PHONG ////////////////////////////////
 	@GetMapping("/admin/phong/xoaphong/{maPhong}")
 	public String getXoaPhong(@PathVariable String maPhong, Model model, RedirectAttributes redirectAttributes) {
