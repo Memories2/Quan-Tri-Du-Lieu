@@ -6,8 +6,6 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -107,5 +105,17 @@ public class HoaDon {
 		HoaDon other = (HoaDon) obj;
 		return Objects.equals(maHoaDon, other.maHoaDon);
 	}
+	
+    @Column(nullable = false)
+    private boolean daThanhToan;
 
+    // ...existing code...
+
+    public boolean isDaThanhToan() {
+        return daThanhToan;
+    }
+
+    public void setDaThanhToan(boolean daThanhToan) {
+        this.daThanhToan = daThanhToan;
+    }
 }
