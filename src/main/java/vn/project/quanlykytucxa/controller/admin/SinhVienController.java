@@ -100,4 +100,5 @@ public class SinhVienController {
 		model.addAttribute("sinhVienList", indexViewModels);
 		return "/admin/sinhvien/index";
 	}
+	
 }

@@ -23,6 +23,6 @@ public class LoginController {
     
     @GetMapping("/sinhvien/dashboard")
     public String sinhvienDashboard() {
-        return "sinhvien/dashboard";
+        return "redirect:/client";
     }
 }
