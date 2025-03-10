@@ -12,7 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import vn.project.quanlykytucxa.domain.HopDong;
 import vn.project.quanlykytucxa.domain.Phong;
+import vn.project.quanlykytucxa.domain.SinhVien;
+import vn.project.quanlykytucxa.service.HopDongService;
 import vn.project.quanlykytucxa.service.PhongService;
 
 import java.util.List;
@@ -22,8 +25,10 @@ import java.util.Optional;
 public class PhongController {
 
     private final PhongService phongService;
+    private final HopDongService hopDongService;
 
-    public PhongController(PhongService phongService) {
+    public PhongController(PhongService phongService, HopDongService hopDongService) {
+        this.hopDongService = hopDongService;
         this.phongService = phongService;
     }
 
@@ -39,9 +44,15 @@ public class PhongController {
     @GetMapping("/admin/phong/chitiet/{maPhong}")
     public String getChiTietPhong(@PathVariable String maPhong, Model model, RedirectAttributes redirectAttributes) {
         Optional<Phong> phongOptional = phongService.findPhongById(maPhong);
+
+        List<HopDong> hopDongs = hopDongService.layTatCaHopDongHopLeCuaMotPhong(maPhong);
+
+        // Chuyển sang sách hợp đồng thành danh sách sinh viên
+        List<SinhVien> sinhViens = hopDongs.stream().map(HopDong::getSinhVien).toList();
         
         if (phongOptional.isPresent()) {
             model.addAttribute("phong", phongOptional.get());
+            model.addAttribute("sinhVienList", sinhViens);
             return "admin/phong/chi-tiet-phong";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy phòng với mã " + maPhong);
@@ -49,15 +60,7 @@ public class PhongController {
         }
     }
 
-    //////////////////////////////// XEM CHI TIET PHONG //////////////////////////////// ////////////////////////////////
-    //////////////////////////////// ////////////////////////////////
-
-    @GetMapping("/admin/phong/chitietphong")
-    public String getChiTietPhong() {
-
-        return "admin/phong/chitietphong";
-    }
-
+   
     //////////////////////////////// CREATE PHONG ////////////////////////////////
     @GetMapping("/admin/phong/taophong")
     public String getTrangTaoPhong(Model model) {

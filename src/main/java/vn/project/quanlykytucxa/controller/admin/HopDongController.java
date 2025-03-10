@@ -1,14 +1,18 @@
 package vn.project.quanlykytucxa.controller.admin;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import vn.project.quanlykytucxa.exception.BusinessException;
+import vn.project.quanlykytucxa.repository.HopDongRepository;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -34,6 +38,8 @@ public class HopDongController {
     @Autowired
     private PhongService phongService;
 
+    @Autowired
+    private HopDongRepository hopDongRepository;
     @GetMapping("/hopdong/kiemTraHetHan")
     public boolean kiemTraHopDongHetHan(@RequestParam("maSV") String maSV) {
         return hopDongService.kiemTraHopDongHetHan(maSV);
@@ -129,6 +135,11 @@ public class HopDongController {
                 return "admin/hopdong/them-hop-dong";
             }
 
+            //set trạng thái cho hợp đồng là đang hoạt động vì mới taọ
+            // 1 là đang hoạt động
+            // 0 là hết hạn 
+            newHopDong.setTrangThai(1);
+
             // Lưu hợp đồng (Trigger sẽ được kích hoạt tại đây)
             hopDongService.themHopDong(newHopDong);
 
@@ -162,5 +173,28 @@ public class HopDongController {
             return "admin/hopdong/them-hop-dong";
         }
     }
+
+    ////////////////////////// Trang chủ hợp đồng //////////////////////////
+    @GetMapping("/admin/hopdong")
+    public String getHopDongHome(Model model) {
+        List<HopDong> hopDongs = hopDongService.layTatCaHopDong();
+        model.addAttribute("hopDongs", hopDongs);
+        return "admin/hopdong/danh-sach-hop-dong";
+    }
+
+
+    ///////////// Xem chi tiết hợp đồng /////////////
+    @GetMapping("/admin/hopdong/chitiet/{maHD}")
+    public String getChiTietHopDong(@PathVariable("maHD") String maHD, Model model) {
+        HopDong hopDong = hopDongRepository.findById(maHD).orElse(null);
+        if (hopDong == null) {
+            model.addAttribute("errorMessage", "Không tìm thấy hợp đồng với mã " + maHD);
+            return "admin/hopdong/chitiet-hop-dong";
+        }
+        model.addAttribute("hopDong", hopDong);
+        return "admin/hopdong/chi-tiet-hop-dong";
+    }
+    
+    
 
 }
