@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 public class HopDong {
 
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 8)
 	private String maHD;
 
@@ -33,12 +33,21 @@ public class HopDong {
 	@Column(nullable = false)
 	private LocalDate ngayKetThuc;
 
+	@Column(nullable = false)
+	private int trangThai;
+
+	public int getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(int trangThai) {
+		this.trangThai = trangThai;
+	}
+
 	public HopDong() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	public SinhVien getSinhVien() {
 		return sinhVien;
@@ -71,7 +80,6 @@ public class HopDong {
 	public void setNgayKetThuc(LocalDate ngayKetThuc) {
 		this.ngayKetThuc = ngayKetThuc;
 	}
-
 
 	public String getMaHD() {
 		return maHD;

@@ -1,6 +1,7 @@
 package vn.project.quanlykytucxa.controller.admin;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -129,6 +130,11 @@ public class HopDongController {
                 return "admin/hopdong/them-hop-dong";
             }
 
+            //set trạng thái cho hợp đồng là đang hoạt động vì mới taọ
+            // 1 là đang hoạt động
+            // 0 là hết hạn 
+            newHopDong.setTrangThai(1);
+
             // Lưu hợp đồng (Trigger sẽ được kích hoạt tại đây)
             hopDongService.themHopDong(newHopDong);
 
@@ -162,5 +168,14 @@ public class HopDongController {
             return "admin/hopdong/them-hop-dong";
         }
     }
+
+    ////////////////////////// Trang chủ hợp đồng //////////////////////////
+    @GetMapping("/admin/hopdong")
+    public String getHopDongHome(Model model) {
+        List<HopDong> hopDongs = hopDongService.layTatCaHopDong();
+        model.addAttribute("hopDongs", hopDongs);
+        return "admin/hopdong/danh-sach-hop-dong";
+    }
+    
 
 }

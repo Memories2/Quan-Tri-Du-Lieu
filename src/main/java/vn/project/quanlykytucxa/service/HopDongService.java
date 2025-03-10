@@ -66,4 +66,11 @@ public class HopDongService {
         }
     }
 
+
+    /////////// lấy tất cả hợp động ////
+    @Transactional(readOnly = true)
+    public List<HopDong> layTatCaHopDong() {
+        return hopDongRepository.findAll();
+    }
+
 }
