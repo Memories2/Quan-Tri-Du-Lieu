@@ -22,4 +22,6 @@ public interface HopDongRepository extends JpaRepository<HopDong, String> {
     //get all contracts by phong id
     @Query(value = "SELECT * FROM hop_dong WHERE ma_phong = :maPhong", nativeQuery = true)
     List<HopDong> findAllByPhongId(@Param("maPhong") String maPhong);
+
+    
 }

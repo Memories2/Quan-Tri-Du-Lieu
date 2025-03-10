@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import vn.project.quanlykytucxa.domain.LoaiPhong;
 import vn.project.quanlykytucxa.domain.Phong;
-import vn.project.quanlykytucxa.domain.SinhVien;
 import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.repository.LoaiPhongRepository;
 import vn.project.quanlykytucxa.repository.PhongRepository;
@@ -19,13 +18,9 @@ public class PhongService {
     private final PhongRepository phongRepository;
     private final LoaiPhongRepository loaiPhongRepository;
     private final HopDongRepository hopDongRepository;
-    private final HopDongService hopDongService;
-    private final PhongService phongService;
 
     public PhongService(PhongRepository phongRepository, LoaiPhongRepository loaiPhongRepository,
-            HopDongRepository hopDongRepository, HopDongService hopDongService, PhongService phongService) {
-        this.hopDongService = hopDongService;
-        this.phongService = phongService;
+            HopDongRepository hopDongRepository) {
         this.phongRepository = phongRepository;
         this.loaiPhongRepository = loaiPhongRepository;
         this.hopDongRepository = hopDongRepository;
@@ -76,18 +71,5 @@ public class PhongService {
 
     public List<Phong> findAllPhong() {
         return phongRepository.findAll();
-    }
-
-    public List<SinhVien> layTatCaSinhVienTrongMotPhongHienTai(String maPhong) {
-        return hopDongService.layTatCaHopDongHopLeCuaMotPhong(maPhong).stream().map(hopDong -> hopDong.getSinhVien())
-                .toList();
-    }
-
-    public boolean isPhongFull(String maPhong) {
-        Phong phong = phongRepository.findById(maPhong).orElse(null);
-        if (phong == null) {
-            return false;
-        }
-        return hopDongRepository.findAllByPhongId(maPhong).size() >= phong.getSoLuongToiDa();
     }
 }
