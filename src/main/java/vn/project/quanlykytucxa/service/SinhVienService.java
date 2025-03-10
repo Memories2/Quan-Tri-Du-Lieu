@@ -82,6 +82,12 @@ public class SinhVienService {
 		}
 		return svms;
 	}
+	/////////////////////////////////////////////////////////////////////////// Đỗ Thành Tài ////////////////////////////////
+	
+	public boolean checkSinhVienExist(String maSV) {
+		List<SinhVien> sv = sinhVienRepository.getSinhVienMasv(maSV);
+		return sv.size() > 0;
+	}
 
 	@Transactional(readOnly = true)
 	public int countSinhVien() {

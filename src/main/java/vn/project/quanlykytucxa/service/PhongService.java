@@ -24,7 +24,7 @@ public class PhongService {
         this.phongRepository = phongRepository;
         this.loaiPhongRepository = loaiPhongRepository;
         this.hopDongRepository = hopDongRepository;
-        
+
     }
 
     @Transactional
@@ -53,8 +53,8 @@ public class PhongService {
     // completed
     public boolean isPhongInUse(String maPhong) {
         // Example implementation if you had a HopDongRepository:
-         return hopDongRepository.existsByPhongMaPhong(maPhong);
-       // return false;
+        return hopDongRepository.existsByPhongMaPhong(maPhong);
+        // return false;
     }
 
     public Optional<Phong> findPhongById(String maPhong) {
