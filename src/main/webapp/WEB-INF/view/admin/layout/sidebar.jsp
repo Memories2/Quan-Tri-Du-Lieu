@@ -28,6 +28,10 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-file-signature"></i></div>
                             Hợp Đồng
                         </a>
+                        <a class="nav-link" href="/admin/dichvu">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-bell-concierge"></i></div>
+                            Dịch Vụ
+                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

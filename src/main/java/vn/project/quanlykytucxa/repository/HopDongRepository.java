@@ -1,6 +1,7 @@
 package vn.project.quanlykytucxa.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,7 @@ public interface HopDongRepository extends JpaRepository<HopDong, String> {
     //get all contracts by phong id
     @Query(value = "SELECT * FROM hop_dong WHERE ma_phong = :maPhong", nativeQuery = true)
     List<HopDong> findAllByPhongId(@Param("maPhong") String maPhong);
+
 
     
 }

@@ -134,18 +134,22 @@
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                             crossorigin="anonymous"></script>
                         <script src="/js/scripts.js"></script>
+                        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
                         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
                         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
                         <script>
-                            window.addEventListener('DOMContentLoaded', event => {
-                                const datatablesSimple = document.getElementById('datatablesSimple');
-                                if (datatablesSimple) {
-                                    new DataTable(datatablesSimple, {
-                                        language: {
-                                            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
-                                        }
-                                    });
-                                }
+                            $(document).ready(function () {
+                                $('#datatablesSimple').DataTable({
+                                    language: {
+                                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+                                    },
+                                    pageLength: 10,
+                                    responsive: true,
+                                    order: [[0, 'desc']],
+                                    columnDefs: [
+                                        { orderable: false, targets: 7 }
+                                    ]
+                                });
                             });
                         </script>
                     </body>

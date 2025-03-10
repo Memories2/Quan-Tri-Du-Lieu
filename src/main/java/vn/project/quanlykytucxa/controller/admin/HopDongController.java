@@ -8,8 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import vn.project.quanlykytucxa.exception.BusinessException;
+import vn.project.quanlykytucxa.repository.HopDongRepository;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,6 +38,8 @@ public class HopDongController {
     @Autowired
     private PhongService phongService;
 
+    @Autowired
+    private HopDongRepository hopDongRepository;
     @GetMapping("/hopdong/kiemTraHetHan")
     public boolean kiemTraHopDongHetHan(@RequestParam("maSV") String maSV) {
         return hopDongService.kiemTraHopDongHetHan(maSV);
@@ -176,6 +181,20 @@ public class HopDongController {
         model.addAttribute("hopDongs", hopDongs);
         return "admin/hopdong/danh-sach-hop-dong";
     }
+
+
+    ///////////// Xem chi tiết hợp đồng /////////////
+    @GetMapping("/admin/hopdong/chitiet/{maHD}")
+    public String getChiTietHopDong(@PathVariable("maHD") String maHD, Model model) {
+        HopDong hopDong = hopDongRepository.findById(maHD).orElse(null);
+        if (hopDong == null) {
+            model.addAttribute("errorMessage", "Không tìm thấy hợp đồng với mã " + maHD);
+            return "admin/hopdong/chitiet-hop-dong";
+        }
+        model.addAttribute("hopDong", hopDong);
+        return "admin/hopdong/chi-tiet-hop-dong";
+    }
+    
     
 
 }
