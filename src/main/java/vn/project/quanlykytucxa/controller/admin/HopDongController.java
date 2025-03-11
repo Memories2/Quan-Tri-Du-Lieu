@@ -20,11 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import vn.project.quanlykytucxa.domain.HopDong;
 import vn.project.quanlykytucxa.domain.SinhVien;
-import vn.project.quanlykytucxa.exception.BusinessException;
 import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.service.HopDongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.service.PhongService;
+import vn.project.quanlykytucxa.service.PDFGeneratorService;
+
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class HopDongController {
@@ -40,6 +43,10 @@ public class HopDongController {
 
     @Autowired
     private HopDongRepository hopDongRepository;
+
+    @Autowired
+    private PDFGeneratorService pdfGeneratorService;
+
     @GetMapping("/hopdong/kiemTraHetHan")
     public boolean kiemTraHopDongHetHan(@RequestParam("maSV") String maSV) {
         return hopDongService.kiemTraHopDongHetHan(maSV);
@@ -60,8 +67,6 @@ public class HopDongController {
 
         return "admin/hopdong/them-hop-dong";
     }
-
-    
 
     @PostMapping("admin/hopdong/themHopDong")
     public String themHopDong(
@@ -135,9 +140,9 @@ public class HopDongController {
                 return "admin/hopdong/them-hop-dong";
             }
 
-            //set trạng thái cho hợp đồng là đang hoạt động vì mới taọ
+            // set trạng thái cho hợp đồng là đang hoạt động vì mới taọ
             // 1 là đang hoạt động
-            // 0 là hết hạn 
+            // 0 là hết hạn
             newHopDong.setTrangThai(1);
 
             // Lưu hợp đồng (Trigger sẽ được kích hoạt tại đây)
@@ -182,7 +187,6 @@ public class HopDongController {
         return "admin/hopdong/danh-sach-hop-dong";
     }
 
-
     ///////////// Xem chi tiết hợp đồng /////////////
     @GetMapping("/admin/hopdong/chitiet/{maHD}")
     public String getChiTietHopDong(@PathVariable("maHD") String maHD, Model model) {
@@ -194,7 +198,22 @@ public class HopDongController {
         model.addAttribute("hopDong", hopDong);
         return "admin/hopdong/chi-tiet-hop-dong";
     }
-    
-    
+
+    @GetMapping("/admin/hopdong/xuatpdf/{maHD}")
+    public void xuatPDF(@PathVariable("maHD") String maHD, HttpServletResponse response) throws IOException {
+        HopDong hopDong = hopDongRepository.findById(maHD).orElse(null);
+
+        if (hopDong == null) {
+            response.sendRedirect("/admin/hopdong");
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=hopdong_" + maHD + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        pdfGeneratorService.exportPDF(hopDong, response);
+    }
 
 }
