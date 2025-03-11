@@ -48,21 +48,21 @@ INSERT INTO `quanlykytucxa`.`loai_phong` (`gia_thue`, `ma_loai_phong`, `ten_loai
 (1200000, 'LP008','Phòng tám');
 -- Bảng phong
 INSERT INTO `quanlykytucxa`.`phong` (`ma_loai_phong`, `ma_phong`, `so_luong_toi_da`, `so_phong`, `tinh_trang`) VALUES
-('LP001', 'P001', 1, 101, 'Trống'),
-('LP002', 'P002', 2, 102, 'Đầy'),
-('LP001', 'P003', 1, 103, 'Trống'),
-('LP004', 'P004', 4, 104, 'Đầy'),
-('LP001', 'P005', 1, 105, 'Trống'),
-('LP006', 'P006', 6, 106, 'Đầy'),
+('LP001', 'P001', 2, 101, 'Đầy'),
+('LP002', 'P002', 2, 102, 'Trống'),
+('LP001', 'P003', 1, 103, 'Đầy'),
+('LP004', 'P004', 4, 104, 'Trống'),
+('LP001', 'P005', 1, 105, 'Đầy'),
+('LP006', 'P006', 6, 106, 'Trống'),
 ('LP002', 'P007', 2, 107, 'Trống'),
-('LP008', 'P008', 8, 108, 'Đầy'),
-('LP001', 'P009', 1, 109, 'Trống'),
-('LP002', 'P010', 2, 110, 'Đầy'),
+('LP008', 'P008', 8, 108, 'Trống'),
+('LP001', 'P009', 1, 109, 'Đầy'),
+('LP002', 'P010', 2, 110, 'Trống'),
 ('LP004', 'P011', 4, 111, 'Trống'),
-('LP006', 'P012', 6, 112, 'Đầy'),
-('LP001', 'P013', 1, 113, 'Trống'),
-('LP008', 'P014', 8, 114, 'Đầy'),
-('LP008', 'P015', 3, 115, 'Trống');
+('LP006', 'P012', 6, 112, 'Trống'),
+('LP001', 'P013', 1, 113, 'Đầy'),
+('LP008', 'P014', 8, 114, 'Trống'),
+('LP008', 'P015', 8, 115, 'Trống');
 
 -- Bảng hop_dong
 INSERT INTO `quanlykytucxa`.`hop_dong` (`ma_phong`, `mahd`, `ngay_bat_dau`, `ngay_ket_thuc`, `masv`, `trang_thai`) VALUES
@@ -174,5 +174,101 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE KhoanThoiGian(
+    IN ngay_input DATE
+)
+BEGIN
+    SELECT sv.*
+    FROM sinh_vien sv
+    JOIN hop_dong hd ON sv.masv = hd.masv
+    WHERE ngay_input BETWEEN hd.ngay_bat_dau AND hd.ngay_ket_thuc;
+END //
+
+DELIMITER ;
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE DanhSachPhongTrong()
+BEGIN
+    SELECT p.*
+    FROM phong p
+    WHERE p.tinh_trang like "Trống";
+END //
+
+DELIMITER //
+
+CREATE PROCEDURE PhongChuaSV(IN mssv_input VARCHAR(20))
+BEGIN
+    SELECT h.ma_phong
+    FROM hop_dong h
+    WHERE UPPER(mssv_input) LIKE UPPER(h.masv);
+END //
+
+DELIMITER ;
 
 
+
+DELIMITER //
+CREATE PROCEDURE ChuyenPhongChoSinhVien(
+    IN p_masv VARCHAR(10),
+    IN p_ma_phong_moi VARCHAR(10)
+)
+BEGIN
+    DECLARE p_mahd VARCHAR(10);
+    DECLARE p_ma_phong_cu VARCHAR(10);
+    DECLARE p_so_luong_hien_tai INT;
+    DECLARE p_suc_chua INT;
+    
+    START TRANSACTION;
+    
+    -- Kiểm tra hợp đồng hợp lệ của sinh viên
+    SELECT mahd, ma_phong INTO p_mahd, p_ma_phong_cu
+    FROM hop_dong
+    WHERE masv = p_masv AND trang_thai = 0
+    LIMIT 1;
+
+    IF p_mahd IS NULL THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Sinh viên chưa có hợp đồng hợp lệ.';
+    END IF;
+
+    -- Kiểm tra số lượng sinh viên trong phòng mới
+    SELECT COUNT(*) INTO p_so_luong_hien_tai FROM hop_dong WHERE ma_phong = p_ma_phong_moi AND trang_thai = 0;
+    SELECT so_luong_toi_da INTO p_suc_chua FROM phong WHERE ma_phong = p_ma_phong_moi;
+    
+    IF p_so_luong_hien_tai >= p_suc_chua THEN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Phòng mới đã đầy, không thể chuyển.';
+    END IF;
+
+    -- Cập nhật hợp đồng sinh viên
+    UPDATE hop_dong SET ma_phong = p_ma_phong_moi WHERE mahd = p_mahd;
+
+    COMMIT;
+END //
+DELIMITER ;
+
+#đếm số lượng hợp đồng trong một phòng
+DELIMITER //
+
+CREATE FUNCTION DemSoLuongHopDong(maPhong VARCHAR(10)) 
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    DECLARE so_luong INT;
+
+    -- Đếm số hợp đồng hợp lệ của phòng
+    SELECT COUNT(*) INTO so_luong 
+    FROM hop_dong 
+    WHERE ma_phong = maPhong AND trang_thai = 0;
+
+    RETURN so_luong;
+END //
+
+DELIMITER ;
+SELECT DemSoLuongHopDong('p001');
