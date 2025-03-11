@@ -12,11 +12,11 @@ BEGIN
     DECLARE so_sv INT;
     DECLARE max_sv INT;
 
-    -- Kiểm tra sinh viên đã có hợp đồng hay chưa 
-   SELECT IF(
-    EXISTS(SELECT 1 FROM hop_dong WHERE masv = NEW.masv AND ngay_ket_thuc >= CURDATE()), 
-    1, 0
-) INTO sv_exists;
+    -- Kiểm tra sinh viên đã có hợp đồng với trang_thai = 0 hay chưa
+    SELECT IF(
+        EXISTS(SELECT 1 FROM hop_dong WHERE masv = NEW.masv AND trang_thai = 1), 
+        1, 0
+    ) INTO sv_exists;
     
     -- Kiểm tra trạng thái phòng --
     select tinh_trang into phong_status
@@ -58,9 +58,9 @@ BEGIN
     DECLARE max_sv INT;
     
     -- Đếm số sinh viên trong phòng
-    SELECT COUNT(*) INTO so_sv 
-    FROM hop_dong 
-    WHERE ma_phong = NEW.ma_phong AND ngay_ket_thuc >= CURDATE();
+        SELECT COUNT(*) INTO so_sv 
+        FROM hop_dong 
+        WHERE ma_phong = NEW.ma_phong AND trang_thai = 1;
     
     -- Lấy số lượng tối đa của phòng
     SELECT so_luong_toi_da INTO max_sv 
@@ -93,4 +93,29 @@ BEGIN
         UPDATE phong SET tinh_trang = 'TRONG' WHERE ma_phong = OLD.ma_phong;
     END IF;
 END //
+DELIMITER ;
+
+
+
+# Tự động cập nhật hợp đồng hằng ngày
+-- Bật tính năng event scheduler
+SET GLOBAL event_scheduler = ON;
+
+-- Tạo event chạy mỗi ngày vào 00:01 để cập nhật trạng thái
+DELIMITER //
+CREATE EVENT update_hop_dong_trang_thai
+ON SCHEDULE EVERY 1 DAY
+STARTS CURRENT_DATE + INTERVAL 1 DAY
+DO
+BEGIN
+    -- Cập nhật hợp đồng hết hạn (ngày kết thúc < ngày hiện tại)
+    UPDATE hop_dong 
+    SET trang_thai = 0
+    WHERE ngay_ket_thuc < CURDATE() AND trang_thai = 1;
+    
+    -- Cập nhật hợp đồng còn hạn (ngày kết thúc >= ngày hiện tại)
+    UPDATE hop_dong 
+    SET trang_thai = 1
+    WHERE ngay_ket_thuc >= CURDATE() AND trang_thai = 0;
+END//
 DELIMITER ;

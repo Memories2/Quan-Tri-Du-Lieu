@@ -36,11 +36,10 @@ public class HopDongService {
 
         List<HopDong> hopDongs = hopDongRepository.findAllByPhongId(maPhong);
         List<HopDong> hopDongsHopLe = hopDongs.stream()
-                .filter(hopDong -> hopDong.getNgayKetThuc().isAfter(java.time.LocalDate.now())).toList();
+                .filter(hopDong -> hopDong.getTrangThai() == 1).toList();
         return hopDongsHopLe;
     }
 
-    
     public void themHopDong(HopDong hopDong) {
         try {
             hopDongRepository.save(hopDong);
@@ -48,7 +47,7 @@ public class HopDongService {
             // Add debug logging to see the exact exception
             System.out.println("Exception type: " + e.getClass().getName());
             System.out.println("Exception message: " + e.getMessage());
- 
+
             // Get the root cause
             Throwable rootCause = ExceptionUtils.getRootCause(e);
             String message = rootCause != null ? rootCause.getMessage() : e.getMessage();
@@ -65,7 +64,6 @@ public class HopDongService {
             }
         }
     }
-
 
     /////////// lấy tất cả hợp động ////
     @Transactional(readOnly = true)
