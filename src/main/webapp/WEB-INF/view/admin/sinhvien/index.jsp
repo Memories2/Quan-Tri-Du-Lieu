@@ -28,29 +28,51 @@
         <div class="container mt-4">
             <h2 class="text-center">Danh Sách Sinh Viên</h2>
 
-            <form action="/admin/sinhvien/tiemkiem" method="get" class="mb-3">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="masv">Mã sinh viên:</label>
-                        <input type="text" id="masv" name="masv" class="form-control" value="${masv}" placeholder="Nhập mã sinh viên">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="tenSV">Tên sinh viên:</label>
-                        <input type="text" id="tenSV" name="tenSV" value="${tenSV}" class="form-control" placeholder="Nhập tên sinh viên">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="maPhong">Mã phòng:</label>
-                        <input type="text" id="maPhong" name="maPhong" value="${maPhong}" class="form-control" placeholder="Nhập mã phòng">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="soDienThoai">Số điện thoại:</label>
-                        <input type="text" id="soDienThoai" name="soDienThoai" value="${soDienThoai}" class="form-control" placeholder="Nhập số điện thoại">
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
-                    </div>
-                </div>
-            </form>
+			<form action="/admin/sinhvien/tiemkiem" method="get" class="mb-3">
+			    <div class="row g-3"> <!-- g-3 tạo khoảng cách giữa các cột -->
+			        
+			        <div class="col-md-3">
+			            <label for="masv" class="form-label">Mã sinh viên:</label>
+			            <input type="text" id="masv" name="masv" class="form-control" value="${masv}" placeholder="Nhập mã sinh viên">
+			        </div>
+
+			        <div class="col-md-3">
+			            <label for="tenSV" class="form-label">Tên sinh viên:</label>
+			            <input type="text" id="tenSV" name="tenSV" value="${tenSV}" class="form-control" placeholder="Nhập tên sinh viên">
+			        </div>
+
+			        <div class="col-md-3">
+			            <label for="maPhong" class="form-label">Mã phòng:</label>
+			            <input type="text" id="maPhong" name="maPhong" value="${maPhong}" class="form-control" placeholder="Nhập mã phòng">
+			        </div>
+
+			        <div class="col-md-3">
+			            <label for="soDienThoai" class="form-label">Số điện thoại:</label>
+			            <input type="text" id="soDienThoai" name="soDienThoai" value="${soDienThoai}" class="form-control" placeholder="Nhập số điện thoại">
+			        </div>
+
+			        <div class="col-md-3">
+			            <label for="ngay" class="form-label">Ngày cư trú:</label>
+			            <input type="date" id="ngay" name="ngay" value="${ngay}" class="form-control">
+			        </div>
+
+			        <div class="col-md-3">
+			            <label for="trangThaiHopDong" class="form-label">Trạng thái hợp đồng:</label>
+			            <select id="trangThaiHopDong" name="trangThaiHopDong" class="form-select">
+			                <option value="12" ${trangThaiHopDong == 12 ? 'selected' : ''}>Tất cả hợp đồng</option>
+			                <option value="0" ${trangThaiHopDong == 0 ? 'selected' : ''}>Hợp đồng hết hạn</option>
+			                <option value="1" ${trangThaiHopDong == 1 ? 'selected' : ''}>Hợp đồng còn hạn</option>
+			            </select>
+			        </div>
+
+			        <div class="col-12 text-center mt-3">
+			            <button type="submit" class="btn btn-primary">
+			                <i class="bi bi-search"></i> Tìm Kiếm
+			            </button>
+			        </div>
+			        
+			    </div>
+			</form>
 
             <table class="table table-bordered table-hover mt-3">
                 <thead class="table-dark">
@@ -59,6 +81,7 @@
                         <th>Họ Tên</th>
                         <th>Giới Tính</th>
                         <th>Số Điện Thoại</th>
+						<th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,6 +91,14 @@
                             <td>${sinhVien.hoTen}</td>
                             <td>${sinhVien.gioiTinh}</td>
                             <td>${sinhVien.soDienThoai}</td>
+							<td>
+                               <div class="d-flex gap-2">
+                                   <a title="chuyển phòng" href="/admin/sinhvien/chuyenphong/${sinhVien.maSV}" class="btn btn-sm btn-info">
+                                       <i class="fa-regular fa-paper-plane" style="color: #ec2618;"></i>
+                                   </a>
+                                  
+                               </div>
+                           </td>
                         </tr>
                     </c:forEach>
                     <c:if test="${empty sinhVienList}">
@@ -89,14 +120,25 @@
 		               <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 		               <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 		               <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-<!--		               <script>-->
-<!--		                   $(document).ready(function() {-->
-<!--		                       $('#phongTable').DataTable({-->
-<!--		                           language: {-->
-<!--		                               url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/vi.json',-->
-<!--		                           },-->
-<!--		                       });-->
-<!--		                   });-->
-<!--		               </script>-->
-		           </body>
+					   <!-- jQuery -->
+					   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+					   <!-- Bootstrap Datepicker -->
+					   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+					   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+		           
+<!--					   <script>-->
+<!--					       $(document).ready(function () {-->
+<!--					           $("#ngay").datepicker({-->
+<!--					               format: "dd/mm/yyyy", // Định dạng ngày-->
+<!--					               autoclose: true, // Tự động đóng khi chọn ngày-->
+<!--					               todayHighlight: true, // Làm nổi bật ngày hiện tại-->
+<!--					               clearBtn: true, // Thêm nút xóa-->
+<!--					           }).on("show", function () {-->
+<!--					               $(this).attr("autocomplete", "off"); // Tắt autocomplete tránh lỗi nhập tay-->
+<!--					           });-->
+<!--					       });-->
+<!--					   </script>-->
+
+				   </body>
 </html>

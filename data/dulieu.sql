@@ -48,21 +48,21 @@ INSERT INTO `quanlykytucxa`.`loai_phong` (`gia_thue`, `ma_loai_phong`, `ten_loai
 (1200000, 'LP008','Phòng tám');
 -- Bảng phong
 INSERT INTO `quanlykytucxa`.`phong` (`ma_loai_phong`, `ma_phong`, `so_luong_toi_da`, `so_phong`, `tinh_trang`) VALUES
-('LP001', 'P001', 1, 101, 'Trống'),
-('LP002', 'P002', 2, 102, 'Đầy'),
-('LP001', 'P003', 1, 103, 'Trống'),
-('LP004', 'P004', 4, 104, 'Đầy'),
-('LP001', 'P005', 1, 105, 'Trống'),
-('LP006', 'P006', 6, 106, 'Đầy'),
+('LP001', 'P001', 2, 101, 'Đầy'),
+('LP002', 'P002', 2, 102, 'Trống'),
+('LP001', 'P003', 1, 103, 'Đầy'),
+('LP004', 'P004', 4, 104, 'Trống'),
+('LP001', 'P005', 1, 105, 'Đầy'),
+('LP006', 'P006', 6, 106, 'Trống'),
 ('LP002', 'P007', 2, 107, 'Trống'),
-('LP008', 'P008', 8, 108, 'Đầy'),
-('LP001', 'P009', 1, 109, 'Trống'),
-('LP002', 'P010', 2, 110, 'Đầy'),
+('LP008', 'P008', 8, 108, 'Trống'),
+('LP001', 'P009', 1, 109, 'Đầy'),
+('LP002', 'P010', 2, 110, 'Trống'),
 ('LP004', 'P011', 4, 111, 'Trống'),
-('LP006', 'P012', 6, 112, 'Đầy'),
-('LP001', 'P013', 1, 113, 'Trống'),
-('LP008', 'P014', 8, 114, 'Đầy'),
-('LP008', 'P015', 3, 115, 'Trống');
+('LP006', 'P012', 6, 112, 'Trống'),
+('LP001', 'P013', 1, 113, 'Đầy'),
+('LP008', 'P014', 8, 114, 'Trống'),
+('LP008', 'P015', 8, 115, 'Trống');
 
 -- Bảng hop_dong
 INSERT INTO `quanlykytucxa`.`hop_dong` (`ma_phong`, `mahd`, `ngay_bat_dau`, `ngay_ket_thuc`, `masv`, `trang_thai`) VALUES
@@ -70,17 +70,17 @@ INSERT INTO `quanlykytucxa`.`hop_dong` (`ma_phong`, `mahd`, `ngay_bat_dau`, `nga
 ('P001', 'HD001', '2024-01-01', '2025-01-01', 'SV001', 0),
 ('P002', 'HD002', '2024-02-01', '2025-02-01', 'SV002', 0),
 ('P003', 'HD003', '2024-03-01', '2025-03-01', 'SV003', 0),
-('P004', 'HD004', '2024-04-01', '2025-04-01', 'SV004', 0),
-('P005', 'HD005', '2024-05-01', '2025-05-01', 'SV005', 0),
-('P006', 'HD006', '2024-06-01', '2025-06-01', 'SV006', 0),
-('P007', 'HD007', '2024-07-01', '2025-07-01', 'SV007', 0),
-('P008', 'HD008', '2024-08-01', '2025-08-01', 'SV008', 0),
-('P009', 'HD009', '2024-09-01', '2025-09-01', 'SV009', 0),
-('P010', 'HD010', '2024-10-01', '2025-10-01', 'SV010', 0),
-('P011', 'HD011', '2024-11-01', '2025-11-01', 'SV011', 0),
-('P012', 'HD012', '2024-12-01', '2025-12-01', 'SV012', 0),
-('P013', 'HD013', '2025-01-01', '2026-01-01', 'SV013', 0),
-('P014', 'HD014', '2025-02-01', '2026-02-01', 'SV014', 0),
+('P004', 'HD004', '2024-04-01', '2025-04-01', 'SV004', 1),
+('P005', 'HD005', '2024-05-01', '2025-05-01', 'SV005', 1),
+('P006', 'HD006', '2024-06-01', '2025-06-01', 'SV006', 1),
+('P007', 'HD007', '2024-07-01', '2025-07-01', 'SV007', 1),
+('P008', 'HD008', '2024-08-01', '2025-08-01', 'SV008', 1),
+('P009', 'HD009', '2024-09-01', '2025-09-01', 'SV009', 1),
+('P010', 'HD010', '2024-10-01', '2025-10-01', 'SV010', 1),
+('P011', 'HD011', '2024-11-01', '2025-11-01', 'SV011', 1),
+('P012', 'HD012', '2024-12-01', '2025-12-01', 'SV012', 1),
+('P013', 'HD013', '2025-01-01', '2026-01-01', 'SV013', 1),
+('P014', 'HD014', '2025-02-01', '2026-02-01', 'SV014', 1),
 ('P015', 'HD015', '2025-03-01', '2026-03-01', 'SV015', 0);
 
 
@@ -172,6 +172,170 @@ BEGIN
     FROM sinh_vien sv
     WHERE upper(sv.masv) = upper(masv);
 END //
+DELIMITER ;
+
+#Lấy sinh viên theo trạng thái hợp đồng
+DELIMITER //
+CREATE PROCEDURE GetSinhVienMTrangThaiHopDong(IN th int)
+BEGIN
+  SELECT sv.*
+    FROM sinh_vien sv
+    JOIN hop_dong hd ON sv.masv = hd.masv
+    WHERE hd.trang_thai = th;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE KhoanThoiGian(
+    IN ngay_input DATE
+)
+BEGIN
+    SELECT sv.*
+    FROM sinh_vien sv
+    JOIN hop_dong hd ON sv.masv = hd.masv
+    WHERE ngay_input BETWEEN hd.ngay_bat_dau AND hd.ngay_ket_thuc;
+END //
+
+DELIMITER ;
+CALL KhoanThoiGian('2025-10-11');
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE DanhSachPhongTrong()
+BEGIN
+    SELECT p.*
+    FROM phong p
+    WHERE p.tinh_trang like "Trống";
+END //
+
+DELIMITER //
+
+CREATE PROCEDURE PhongChuaSV(IN mssv_input VARCHAR(20))
+BEGIN
+    SELECT h.ma_phong
+    FROM hop_dong h
+    WHERE UPPER(mssv_input) LIKE UPPER(h.masv);
+END //
+
+DELIMITER ;
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE ChuyenPhongChoSinhVien(
+    IN p_masv VARCHAR(10),
+    IN p_ma_phong_moi VARCHAR(10)
+)
+BEGIN
+    DECLARE p_mahd VARCHAR(10);
+    DECLARE p_ma_phong_cu VARCHAR(10);
+    DECLARE p_so_luong_hien_tai INT;
+    DECLARE p_suc_chua INT;
+    DECLARE p_suc_chua_phong_cu INT;
+    DECLARE tinh_trang_phong VARCHAR(20);
+
+    START TRANSACTION;
+
+    -- Kiểm tra hợp đồng hợp lệ của sinh viên
+    SELECT mahd, ma_phong INTO p_mahd, p_ma_phong_cu
+    FROM hop_dong
+    WHERE masv = p_masv AND trang_thai = 1
+    LIMIT 1;
+
+    -- Kiểm tra nếu sinh viên không có hợp đồng hợp lệ
+    IF p_mahd IS NULL THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Sinh viên chưa có hợp đồng hợp lệ.';
+    END IF;
+
+    -- Kiểm tra số lượng sinh viên trong phòng mới
+    SELECT COUNT(*) INTO p_so_luong_hien_tai FROM hop_dong WHERE ma_phong = p_ma_phong_moi AND trang_thai = 1;
+    SELECT so_luong_toi_da INTO p_suc_chua FROM phong WHERE ma_phong = p_ma_phong_moi;
+
+    -- Nếu phòng mới đã đầy, không cho chuyển
+    IF p_so_luong_hien_tai >= p_suc_chua THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Phòng mới đã đầy, không thể chuyển.';
+    END IF;
+
+    -- Cập nhật hợp đồng của sinh viên sang phòng mới
+    UPDATE hop_dong SET ma_phong = p_ma_phong_moi WHERE mahd = p_mahd;
+
+    -- Kiểm tra số lượng sinh viên còn lại trong phòng cũ
+    SELECT COUNT(*) INTO p_so_luong_hien_tai FROM hop_dong WHERE ma_phong = p_ma_phong_cu AND trang_thai = 1;
+SELECT so_luong_toi_da INTO p_suc_chua_phong_cu FROM phong WHERE ma_phong = p_ma_phong_cu ;
+    -- Nếu phòng cũ không còn sinh viên, cập nhật thành "Trống"
+    IF p_so_luong_hien_tai < p_suc_chua_phong_cu THEN
+        UPDATE phong SET tinh_trang = "Trống" WHERE ma_phong = p_ma_phong_cu;
+    END IF;
+
+    -- Kiểm tra số lượng sinh viên trong phòng mới sau khi chuyển
+    SELECT COUNT(*) INTO p_so_luong_hien_tai FROM hop_dong WHERE ma_phong = p_ma_phong_moi AND trang_thai = 1;
+    SELECT so_luong_toi_da INTO p_suc_chua FROM phong WHERE ma_phong = p_ma_phong_moi;
+
+    -- Nếu phòng mới đạt số lượng tối đa, cập nhật thành "Đầy"
+    IF p_so_luong_hien_tai = p_suc_chua THEN
+        UPDATE phong SET tinh_trang = "Đầy" WHERE ma_phong = p_ma_phong_moi;
+    END IF;
+
+    COMMIT;
+END //
+DELIMITER ;
+
+#đếm số lượng hợp đồng trong một phòng
+DELIMITER //
+
+CREATE FUNCTION DemSoLuongHopDong(maPhong VARCHAR(10)) 
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    DECLARE so_luong INT;
+
+    -- Đếm số hợp đồng hợp lệ của phòng
+    SELECT COUNT(*) INTO so_luong 
+    FROM hop_dong 
+    WHERE ma_phong = maPhong AND trang_thai = 1;
+
+    RETURN so_luong;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE FUNCTION GetSinhVienTheoTrangThai(trangThai INT)
+RETURNS TEXT
+DETERMINISTIC
+BEGIN
+    DECLARE result TEXT DEFAULT '';
+
+    -- Trả về danh sách sinh viên có hợp đồng hết hạn
+    IF trangThai = 0 THEN
+        SELECT GROUP_CONCAT(CONCAT(masv, ' - ', hoten) SEPARATOR ', ') 
+        INTO result
+        FROM sinh_vien sv
+        JOIN hop_dong hd ON sv.masv = hd.masv
+        WHERE CURDATE() > hd.ngay_ket_thuc;
+
+    -- Trả về danh sách sinh viên có hợp đồng còn hạn
+    ELSEIF trangThai = 1 THEN
+        SELECT GROUP_CONCAT(CONCAT(masv, ' - ', hoten) SEPARATOR ', ') 
+        INTO result
+        FROM sinh_vien sv
+        JOIN hop_dong hd ON sv.masv = hd.masv
+        WHERE CURDATE() BETWEEN hd.ngay_bat_dau AND hd.ngay_ket_thuc;
+
+   
+
+    END IF;
+
+    RETURN result;
+END //
+
 DELIMITER ;
 
 
