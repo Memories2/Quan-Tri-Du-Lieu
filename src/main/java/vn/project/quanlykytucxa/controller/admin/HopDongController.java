@@ -1,5 +1,6 @@
 package vn.project.quanlykytucxa.controller.admin;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -7,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import vn.project.quanlykytucxa.exception.BusinessException;
-import vn.project.quanlykytucxa.repository.HopDongRepository;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,17 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import vn.project.quanlykytucxa.domain.HopDong;
-import vn.project.quanlykytucxa.domain.SinhVien;
 import vn.project.quanlykytucxa.domain.Phong;
+import vn.project.quanlykytucxa.domain.SinhVien;
+import vn.project.quanlykytucxa.exception.BusinessException;
+import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.service.HopDongService;
-import vn.project.quanlykytucxa.service.SinhVienService;
-import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.PDFGeneratorService;
-
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import vn.project.quanlykytucxa.service.PhongService;
+import vn.project.quanlykytucxa.service.SinhVienService;
 
 @Controller
 public class HopDongController {
@@ -47,10 +45,20 @@ public class HopDongController {
     @Autowired
     private PDFGeneratorService pdfGeneratorService;
 
-    @GetMapping("/hopdong/kiemTraHetHan")
-    public boolean kiemTraHopDongHetHan(@RequestParam("maSV") String maSV) {
-        return hopDongService.kiemTraHopDongHetHan(maSV);
+    @GetMapping("/admin/hopdong/kiem-tra-hop-dong")
+    public String kiemTraHopDong(@RequestParam("maSV") String maSV, Model model) {
+        // Gọi service để kiểm tra hợp đồng của sinh viên
+        String result = hopDongService.kiemTraHopDong(maSV);
+        
+        // Thêm kết quả vào model để hiển thị trên JSP
+        model.addAttribute("result", result);
+        model.addAttribute("maSV", maSV);
+
+        return "admin/hopdong/danh-sach-hop-dong"; // Trả về trang JSP
     }
+    
+
+
 
     ////////////////////////// Thêm hợp đồng //////////////////////////
     @GetMapping("admin/hopdong/themHopDong")
