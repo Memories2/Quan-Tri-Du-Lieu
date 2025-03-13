@@ -72,5 +72,8 @@ public class HopDongService {
     public List<HopDong> layTatCaHopDong() {
         return hopDongRepository.findAll();
     }
+    public HopDong getHopDongByMaHD(String maHD) {
+        return hopDongRepository.findById(maHD).orElse(null);
+    }
 
 }

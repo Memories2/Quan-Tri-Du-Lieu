@@ -34,4 +34,7 @@ public class SinhVienUserDetailsService implements UserDetailsService {
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority(role)))
                 .build();
     }
+    public SinhVien getSinhVienTen(String hoTen) {
+        return (SinhVien) sinhVienRepository.getSinhVienTen(hoTen);
+    }
 }

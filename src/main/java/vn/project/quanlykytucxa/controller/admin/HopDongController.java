@@ -195,6 +195,11 @@ public class HopDongController {
         return "admin/hopdong/chi-tiet-hop-dong";
     }
     
-    
+    @GetMapping("/sinhvien/hopdong/giahan")
+    public String showGiaHanHopDongForm(@RequestParam("maHD") String maHD, Model model) {
+        HopDong hopDong = hopDongService.getHopDongByMaHD(maHD);
+        model.addAttribute("hopDong", hopDong);
+        return "sinhvien/hopdong/giai-han-hop-dong";
+    }
 
 }

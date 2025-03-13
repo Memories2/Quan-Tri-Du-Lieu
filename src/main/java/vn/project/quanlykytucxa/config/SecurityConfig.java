@@ -19,29 +19,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // .csrf(csrf -> csrf.disable()) // For simplicity while testing
-                // .authorizeHttpRequests(authorize -> authorize
-                //         .requestMatchers("/css/**", "/js/**", "/images/**", "/client/**").permitAll()
-                //         // Add this line to exclude JSP files from security checks
-                //         .requestMatchers("/WEB-INF/view/**").permitAll()
-                //         .requestMatchers("/login", "/register", "/").permitAll()
-                //         .requestMatchers("/admin/**").hasRole("ADMIN")
-                //         .anyRequest().authenticated())
-                // .formLogin(form -> form
-                //         .loginPage("/login")
-                //         .loginProcessingUrl("/perform-login")
-                //         .usernameParameter("masv")
-                //         .passwordParameter("matKhau")
-                //         .successHandler(authenticationSuccessHandler()) // Add this line
-                //         .failureUrl("/login?error=true")
-                //         .permitAll());
+                .csrf(csrf -> csrf.disable()) // For simplicity while testing
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/client/**").permitAll()
+                        // Add this line to exclude JSP files from security checks
+                        .requestMatchers("/WEB-INF/view/**").permitAll()
+                        .requestMatchers("/login", "/register", "/").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform-login")
+                        .usernameParameter("masv")
+                        .passwordParameter("matKhau")
+                        .successHandler(authenticationSuccessHandler()) // Add this line
+                        .failureUrl("/login?error=true")
+                        .permitAll());
 
             
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize
-                    .anyRequest().permitAll() // Cho phép truy cập tất cả
-                )
-                .formLogin(form -> form.disable()); // Tắt form đăng nhập
+                // .csrf(csrf -> csrf.disable())
+                // .authorizeHttpRequests(authorize -> authorize
+                //     .anyRequest().permitAll() // Cho phép truy cập tất cả
+                // )
+                // .formLogin(form -> form.disable()); // Tắt form đăng nhập
 
         return http.build();
     }
