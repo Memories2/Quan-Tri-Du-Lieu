@@ -134,8 +134,13 @@
                                                             <i class="fas fa-arrow-left"></i> Quay lại
                                                         </a>
                                                         <div>
+                                                            <!-- Thêm nút Xuất PDF ở đây -->
+                                                            <a href="/admin/hopdong/xuatpdf/${hopDong.maHD}"
+                                                                class="btn btn-success me-2">
+                                                                <i class="fas fa-file-pdf"></i> Xuất PDF
+                                                            </a>
                                                             <a href="/admin/hopdong/sua/${hopDong.maHD}"
-                                                                class="btn btn-primary">
+                                                                class="btn btn-primary me-2">
                                                                 <i class="fas fa-edit"></i> Sửa
                                                             </a>
                                                             <a href="/admin/hopdong/xoa/${hopDong.maHD}"

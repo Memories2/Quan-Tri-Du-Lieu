@@ -32,6 +32,13 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-bell-concierge"></i></div>
                             Dịch Vụ
                         </a>
+                        <a class="nav-link" href="/admin/doanhthu">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            Doanh thu
+                        </a>
+                        
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

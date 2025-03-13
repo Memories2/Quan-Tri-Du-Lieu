@@ -9,8 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import vn.project.quanlykytucxa.DTO.SearchSVDTO;
+import vn.project.quanlykytucxa.domain.Phong;
+import vn.project.quanlykytucxa.domain.SinhVien;
+import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
 
@@ -19,10 +25,13 @@ public class SinhVienController {
 
 	@Autowired
 	private SinhVienService sinhVienService;
+	@Autowired
+	private PhongService phongService;
 
 	@GetMapping("/admin/sinhvien/tiemkiem")
 	public String timKiemSinhVien(@ModelAttribute SearchSVDTO searchDTO, Model model) {
 
+		System.out.println(searchDTO.toString());
 		List<SinhVienIndexViewModel> danhSachSV = new ArrayList<>();
 
 		// Tìm theo mã sinh viên
@@ -66,12 +75,33 @@ public class SinhVienController {
 			}
 		}
 
+		// Tìm theo ngày cư trú
+		if (searchDTO.getNgay() != null) {
+			if (danhSachSV.isEmpty()) {
+				danhSachSV = sinhVienService.getSinhVienNgayCuTru(searchDTO.getNgay());
+			} else {
+				List<SinhVienIndexViewModel> danhSachSV01 = sinhVienService.getSinhVienNgayCuTru(searchDTO.getNgay());
+				danhSachSV.retainAll(danhSachSV01);
+			}
+		}
+
+		// Trạng thái hợp đồng
+		if (searchDTO.getTrangThaiHopDong() == 1 || searchDTO.getTrangThaiHopDong() == 0) {
+			if (danhSachSV.isEmpty()) {
+				danhSachSV = sinhVienService.getSinhVienMTrangThaiHopDong(searchDTO.getTrangThaiHopDong());
+			} else {
+				List<SinhVienIndexViewModel> danhSachSV01 = sinhVienService.getSinhVienMTrangThaiHopDong(searchDTO.getTrangThaiHopDong());
+				danhSachSV.retainAll(danhSachSV01);
+			}
+		}
+
 		model.addAttribute("sinhVienList", danhSachSV);
 		model.addAttribute("masv", searchDTO.getMasv());
 		model.addAttribute("tenSV", searchDTO.getTenSV());
 		model.addAttribute("maPhong", searchDTO.getMaPhong());
 		model.addAttribute("soDienThoai", searchDTO.getSoDienThoai());
-		return "/admin/sinhvien/index";
+		model.addAttribute("ngay", searchDTO.getNgay());
+		return "admin/sinhvien/index";
 	}
 
 	public static boolean hasNonEmptyField(Object dto) {
@@ -99,5 +129,46 @@ public class SinhVienController {
 		model.addAttribute("sinhVienList", indexViewModels);
 		return "admin/sinhvien/index";
 	}
-	
+
+	@GetMapping("/admin/sinhvien/chuyenphong/{id}")
+	public String chuyenPhong(@PathVariable("id") String id, Model model) {
+		// Lấy tên phòng hiện tại sinh viên đang ở
+		String phong = sinhVienService.phongSinhvienDangOHienTai(id);
+		// Danh sách tạo compobox các phòng còn trống
+		List<Phong> phongtrongs = phongService.danhSachPhongTrong();
+		SinhVien sinhVien = sinhVienService.findById(id);
+
+		model.addAttribute("phongtrongs", phongtrongs);
+		model.addAttribute("phong", phong);
+		model.addAttribute("idSinhVien", id);
+		model.addAttribute("sinhVien", sinhVien);
+
+		return "admin/sinhvien/chuyenphong";
+	}
+
+	@GetMapping("/admin/sinhvien/chuyenphong/save")
+	public String chuyenPhongTransaction(@RequestParam("idSinhVien") String idSinhVien,
+			@RequestParam("phong") String phong, Model model, RedirectAttributes redirectAttributes) {
+		// Lấy tên phòng hiện tại sinh viên đang ở
+		String phongHienTai = sinhVienService.phongSinhvienDangOHienTai(idSinhVien);
+
+		// Danh sách tạo combobox các phòng còn trống
+		List<Phong> phongTrongs = phongService.danhSachPhongTrong();
+		SinhVien sinhVien = sinhVienService.findById(idSinhVien);
+
+		try {
+			phongService.chuyenPhong(idSinhVien, phong);
+			redirectAttributes.addFlashAttribute("successMessage", "Chuyển phòng thành công!");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());
+		}
+
+		model.addAttribute("phongtrongs", phongTrongs);
+		model.addAttribute("phong", phong);
+		model.addAttribute("idSinhVien", idSinhVien);
+		model.addAttribute("sinhVien", sinhVien);
+
+		return "redirect:/admin/sinhvien/chuyenphong/" + idSinhVien;
+	}
+
 }

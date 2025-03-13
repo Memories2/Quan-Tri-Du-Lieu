@@ -124,6 +124,19 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="container-fluid px-4">
+                                        <h1>Kiểm tra hợp đồng sinh viên</h1>
+                                        <form action="/admin/hopdong/kiem-tra-hop-dong" method="get">
+                                            <label for="maSV">Mã sinh viên:</label>
+                                            <input type="text" id="maSV" name="maSV" required />
+                                            <button type="submit">Kiểm tra</button>
+                                        </form>
+                                    
+                                        <c:if test="${not empty result}">
+                                            <h2>${result}</h2>
+                                        </c:if>
+                                        
+                                    </div>                                    
                                 </main>
 
                                 <!--Footer-->

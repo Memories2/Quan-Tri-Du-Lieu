@@ -1,11 +1,11 @@
 package vn.project.quanlykytucxa.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import vn.project.quanlykytucxa.domain.SinhVien;
 
@@ -22,6 +22,9 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 
 	@Query(value = "CALL GetSinhVienTen(:tenSV)", nativeQuery = true)
 	List<SinhVien> getSinhVienTen(@Param("tenSV") String tenSV);
+	
+	@Query(value = "CALL GetSinhVienMTrangThaiHopDong(:tt)", nativeQuery = true)
+	List<SinhVien> getSinhVienMTrangThaiHopDong(@Param("tt") int trangthai);
 
 	@Query(value = "CALL GetSinhVienSDT(:soDienThoai)", nativeQuery = true)
 	List<SinhVien> getSinhVienSDT(@Param("soDienThoai") String soDienThoai);
@@ -29,5 +32,6 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 	@Query("SELECT COUNT(s) FROM SinhVien s")
 	int countSinhVien();
 
+	
 
 }

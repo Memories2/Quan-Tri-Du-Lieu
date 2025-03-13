@@ -1,16 +1,16 @@
 package vn.project.quanlykytucxa.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import vn.project.quanlykytucxa.domain.HopDong;
-import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.exception.BusinessException;
+import vn.project.quanlykytucxa.repository.HopDongRepository;
 
 @Service
 public class HopDongService {
@@ -19,9 +19,25 @@ public class HopDongService {
     private HopDongRepository hopDongRepository;
 
     @Transactional(readOnly = true)
-    public boolean kiemTraHopDongHetHan(String maSV) {
-        int result = hopDongRepository.kiemTraHopDongHetHan(maSV);
-        return result == 1;
+    public String kiemTraHopDong(String maSV) {
+        // Kiểm tra mã sinh viên có hợp đồng hay không
+        if (!hopDongRepository.existsBySinhVienMaSV(maSV)) {
+            return "Không có hợp đồng cho sinh viên này.";
+        }
+
+        // Lấy ngày kết thúc hợp đồng của sinh viên
+        LocalDate ngayKetThuc = hopDongRepository.getNgayKetThucByMaSV(maSV);
+        
+        if (ngayKetThuc == null) {
+            return "Không có hợp đồng cho sinh viên này.";
+        }
+
+        // So sánh ngày kết thúc hợp đồng với ngày hiện tại
+        if (ngayKetThuc.isBefore(LocalDate.now())) {
+            return "Hợp đồng đã hết hạn.";
+        } else {
+            return "Hợp đồng còn hạn.";
+        }
     }
 
     /////////// Đỗ Thành Tài//////
@@ -36,11 +52,10 @@ public class HopDongService {
 
         List<HopDong> hopDongs = hopDongRepository.findAllByPhongId(maPhong);
         List<HopDong> hopDongsHopLe = hopDongs.stream()
-                .filter(hopDong -> hopDong.getNgayKetThuc().isAfter(java.time.LocalDate.now())).toList();
+                .filter(hopDong -> hopDong.getTrangThai() == 1).toList();
         return hopDongsHopLe;
     }
 
-    
     public void themHopDong(HopDong hopDong) {
         try {
             hopDongRepository.save(hopDong);
@@ -48,7 +63,7 @@ public class HopDongService {
             // Add debug logging to see the exact exception
             System.out.println("Exception type: " + e.getClass().getName());
             System.out.println("Exception message: " + e.getMessage());
- 
+
             // Get the root cause
             Throwable rootCause = ExceptionUtils.getRootCause(e);
             String message = rootCause != null ? rootCause.getMessage() : e.getMessage();
@@ -64,8 +79,8 @@ public class HopDongService {
                 throw new BusinessException("DB_ERROR", "Lỗi khi lưu hợp đồng: " + message);
             }
         }
+        
     }
-
 
     /////////// lấy tất cả hợp động ////
     @Transactional(readOnly = true)
