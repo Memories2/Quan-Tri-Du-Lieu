@@ -340,3 +340,18 @@ DELIMITER ;
 
 
 
+
+DELIMITER //
+
+CREATE PROCEDURE LayDanhSachTatCaDichVuMaSinhVienDangSuDung(IN mssv_input VARCHAR(20))
+BEGIN
+    SELECT dv.madv,dv.don_gia,dv.ten_dich_vu,sdv.nam_su_dung,sdv.so_luong_su_dung,sdv.thang_su_dung,sdv.masddv
+    FROM hop_dong AS hd
+    JOIN su_dung_dich_vu AS sdv ON sdv.mahd = hd.mahd
+    JOIN dich_vu AS dv ON dv.madv = sdv.madv
+    WHERE UPPER(mssv_input) = UPPER(hd.masv)  -- Sửa lỗi sử dụng LIKE sai cú pháp
+    AND CURRENT_DATE BETWEEN hd.ngay_bat_dau AND hd.ngay_ket_thuc;
+END //
+
+DELIMITER ;
+
