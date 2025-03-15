@@ -1,85 +1,107 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-            <!DOCTYPE html>
-            <html lang="vi">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-            <head>
-                <meta charset="utf-8" />
-                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Dự án laptopshop" />
-                <meta name="author" content="" />
-                <title>Tạo mới phòng</title>
-                <link href="/css/styles.css" rel="stylesheet" />
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            </head>
+<!DOCTYPE html>
+<html lang="vi">
 
-            <body class="sb-nav-fixed">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Dự án laptopshop">
+    <meta name="author" content="">
+    <title>Tạo mới dịch vụ</title>
 
-                <!--Header-->
-                <jsp:include page="../layout/header.jsp" />
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-                <div id="layoutSidenav">
+    <!-- Custom styles -->
+    <link href="/css/styles.css" rel="stylesheet">
 
-                    <!--Sidebar-->
-                    <jsp:include page="../layout/sidebar.jsp" />
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
 
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-                                <h1 class="mt-4">Tạo mới dịch vụ</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
-                                    <li class="breadcrumb-item active">Tạo mới dịch vụ</li>
-                                </ol>
-                                <div class="mt-5">
-                                    <div class="row">
-                                        <div class="col-md-6 col-12 mx-auto">
-                                            <h3>Thêm phòng mới</h3>
-                                            <hr />
-                                            <form:form method="post" action="/admin/dichvu/taodichvu"
-                                                modelAttribute="newDichVu" class="row" enctype="multipart/form-data">
+<body class="sb-nav-fixed">
 
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Mã dịch vụ:</label>
-                                                    <form:input type="text" class="form-control" path="maDV" />
-                                                </div>
+    <!-- Header -->
+    <jsp:include page="../layout/header.jsp" />
 
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Tên Dịch Vụ:</label>
-                                                    <form:input type="text" class="form-control" path="tenDichVu" />
-                                                </div>
-                                        
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Đơn giá</label>
-                                                    <form:input type="number" class="form-control"
-                                                        path="donGia" />
-                                                </div>
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <jsp:include page="../layout/sidebar.jsp" />
 
-                                                <div class="col-12 mb-5">
-                                                    <button type="submit" class="btn btn-primary">Tạo Dịch Vụ</button>
-                                                    <a href="/admin/phong" class="btn btn-secondary">Hủy</a>
-                                                </div>
-
-                                            </form:form>
-
-                                        </div>
-
-                                    </div>
+        <div id="layoutSidenav_content">
+            <main class="container mt-4">
+				<c:if test="${not empty err}">
+				    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+				        <i class="fa-solid fa-circle-exclamation"></i> ${err}
+				        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				    </div>
+				</c:if>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg p-4">
+                            <h3 class="text-center text-primary">Tạo Mới Dịch Vụ</h3>
+                            <form action="/admin/dichvu/taodichvu" method="post" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="maDV" class="form-label">Mã dịch vụ:</label>
+                                    <input type="text" class="form-control" id="maDV" name="maDV" required>
+                                    <div class="invalid-feedback">Vui lòng nhập mã dịch vụ.</div>
                                 </div>
-                            </div>
-                        </main>
-                        <!--Footer-->
-                        <jsp:include page="../layout/footer.jsp" />
+
+                                <div class="mb-3">
+                                    <label for="tenDichVu" class="form-label">Tên dịch vụ:</label>
+                                    <input type="text" class="form-control" id="tenDichVu" name="tenDichVu" required>
+                                    <div class="invalid-feedback">Vui lòng nhập tên dịch vụ.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="donGia" class="form-label">Giá dịch vụ:</label>
+                                    <input type="number" class="form-control" id="donGia" name="donGia" required>
+                                    <div class="invalid-feedback">Vui lòng nhập giá dịch vụ.</div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-save"></i> Lưu
+                                    </button>
+                                    <a href="/admin/dichvu" class="btn btn-secondary">
+                                        <i class="fa-solid fa-arrow-left"></i> Quay lại
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                    crossorigin="anonymous"></script>
-                <script src="/js/scripts.js"></script>
+            </main>
 
+            <!-- Footer -->
+            <jsp:include page="../layout/footer.jsp" />
+        </div>
+    </div>
 
-            </body>
+    <!-- Bootstrap 5 & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Validation Script -->
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })();
+    </script>
 
-            </html>
+</body>
+
+</html>

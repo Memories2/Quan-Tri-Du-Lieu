@@ -10,7 +10,8 @@ import vn.project.quanlykytucxa.domain.HoaDon;
 
 public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
 
-    // Truy vấn tính tổng tiền cho một tháng và năm
-    @Query("SELECT SUM(h.tongTien) FROM HoaDon h WHERE MONTH(h.ngayLap) = :thang AND YEAR(h.ngayLap) = :nam AND h.daThanhToan = :trangThai")
-    BigDecimal baoCaoDoanhThuTheoThang(@Param("thang") int thang, @Param("nam") int nam, @Param("trangThai") boolean trangThai);
+	// Truy vấn tính tổng tiền cho một tháng và năm
+	@Query("SELECT SUM(h.tongTien) FROM HoaDon h WHERE MONTH(h.ngayLap) = :thang AND YEAR(h.ngayLap) = :nam AND h.daThanhToan = :trangThai")
+	BigDecimal baoCaoDoanhThuTheoThang(@Param("thang") int thang, @Param("nam") int nam,
+			@Param("trangThai") boolean trangThai);
 }

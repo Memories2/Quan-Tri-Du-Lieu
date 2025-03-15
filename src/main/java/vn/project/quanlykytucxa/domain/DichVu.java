@@ -5,27 +5,15 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class DichVu {
 	@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 8)
-	//private Integer maDV;
+	// private Integer maDV;
 	private String maDV;
-	public DichVu(String maDV, String tenDichVu, BigDecimal donGia) {
-		super();
-		this.maDV = maDV;
-		this.tenDichVu = tenDichVu;
-		this.donGia = donGia;
-	}
-
-	public void setMaDV(String maDV) {
-		this.maDV = maDV;
-	}
 
 	@Column(nullable = false, length = 255)
 	private String tenDichVu;
@@ -34,14 +22,22 @@ public class DichVu {
 	private BigDecimal donGia;
 
 	public DichVu() {
-		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
-	public DichVu(String tenDichVu, BigDecimal donGia) {
+	public DichVu(String maDV, String tenDichVu, BigDecimal donGia) {
 		super();
+		this.maDV = maDV;
 		this.tenDichVu = tenDichVu;
 		this.donGia = donGia;
+	}
+
+	public String getMaDV() {
+		return maDV;
+	}
+
+	public void setMaDV(String maDV) {
+		this.maDV = maDV;
 	}
 
 	public String getTenDichVu() {
@@ -60,10 +56,6 @@ public class DichVu {
 		this.donGia = donGia;
 	}
 
-	public String getMaDV() {
-		return maDV;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(maDV);
@@ -79,6 +71,11 @@ public class DichVu {
 			return false;
 		DichVu other = (DichVu) obj;
 		return Objects.equals(maDV, other.maDV);
+	}
+
+	@Override
+	public String toString() {
+		return "DichVu [maDV=" + maDV + ", tenDichVu=" + tenDichVu + ", donGia=" + donGia + "]";
 	}
 
 }

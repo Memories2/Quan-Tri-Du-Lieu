@@ -11,5 +11,6 @@
                         <a href="#" target="_blank">Sever side renaring</a>
                     </div>
                 </div>
-            </div>
+            </div>				<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
         </footer>

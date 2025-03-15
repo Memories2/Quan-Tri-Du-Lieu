@@ -12,23 +12,21 @@ import vn.project.quanlykytucxa.domain.HopDong;
 
 @Repository
 public interface HopDongRepository extends JpaRepository<HopDong, String> {
-    // Check if there are any contracts using a specific room
-    boolean existsByPhongMaPhong(String maPhong);
+	// Check if there are any contracts using a specific room
+	boolean existsByPhongMaPhong(String maPhong);
 
-    
-    @Query(value = "SELECT kiemTraHopDongHetHan(:maSV)", nativeQuery = true)
-    int kiemTraHopDongHetHan(@Param("maSV") String maSV);
+	@Query(value = "SELECT kiemTraHopDongHetHan(:maSV)", nativeQuery = true)
+	int kiemTraHopDongHetHan(@Param("maSV") String maSV);
 
-    
-    //get all contracts by phong id
-    @Query(value = "SELECT * FROM hop_dong WHERE ma_phong = :maPhong", nativeQuery = true)
-    List<HopDong> findAllByPhongId(@Param("maPhong") String maPhong);
-    
+	// get all contracts by phong id
+	@Query(value = "SELECT * FROM hop_dong WHERE ma_phong = :maPhong", nativeQuery = true)
+	List<HopDong> findAllByPhongId(@Param("maPhong") String maPhong);
+
 // Kiểm tra xem hợp đồng có tồn tại cho mã sinh viên không
-    boolean existsBySinhVienMaSV(String maSV);
+	boolean existsBySinhVienMaSV(String maSV);
 
-    // Lấy ngày kết thúc hợp đồng của sinh viên theo mã sinh viên
-    @Query("SELECT h.ngayKetThuc FROM HopDong h WHERE h.sinhVien.maSV = :maSV")
-    LocalDate getNgayKetThucByMaSV(@Param("maSV") String maSV);
-    
+	// Lấy ngày kết thúc hợp đồng của sinh viên theo mã sinh viên
+	@Query("SELECT h.ngayKetThuc FROM HopDong h WHERE h.sinhVien.maSV = :maSV")
+	LocalDate getNgayKetThucByMaSV(@Param("maSV") String maSV);
+
 }

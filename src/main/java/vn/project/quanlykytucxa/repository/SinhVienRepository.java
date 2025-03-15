@@ -22,7 +22,7 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 
 	@Query(value = "CALL GetSinhVienTen(:tenSV)", nativeQuery = true)
 	List<SinhVien> getSinhVienTen(@Param("tenSV") String tenSV);
-	
+
 	@Query(value = "CALL GetSinhVienMTrangThaiHopDong(:tt)", nativeQuery = true)
 	List<SinhVien> getSinhVienMTrangThaiHopDong(@Param("tt") int trangthai);
 
@@ -37,6 +37,5 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 
 	@Query(value = "CALL PhongChuaSV(:id)", nativeQuery = true)
 	String getTenPhong(String id);
-
 
 }
