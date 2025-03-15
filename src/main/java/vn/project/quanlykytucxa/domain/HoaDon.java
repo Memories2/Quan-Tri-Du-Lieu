@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 
 public class HoaDon {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String maHoaDon;
 
 	@ManyToOne
@@ -105,16 +104,17 @@ public class HoaDon {
 		HoaDon other = (HoaDon) obj;
 		return Objects.equals(maHoaDon, other.maHoaDon);
 	}
+
 	@Column(nullable = false)
-    private boolean daThanhToan;
+	private boolean daThanhToan;
 
-    // ...existing code...
+	// ...existing code...
 
-    public boolean isDaThanhToan() {
-        return daThanhToan;
-    }
+	public boolean isDaThanhToan() {
+		return daThanhToan;
+	}
 
-    public void setDaThanhToan(boolean daThanhToan) {
-        this.daThanhToan = daThanhToan;
-    }
+	public void setDaThanhToan(boolean daThanhToan) {
+		this.daThanhToan = daThanhToan;
+	}
 }

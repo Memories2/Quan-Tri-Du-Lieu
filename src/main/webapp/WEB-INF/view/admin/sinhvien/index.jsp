@@ -29,6 +29,9 @@
 
 					<div id="layoutSidenav_content">
 						<main>
+							<c:if test="${not empty err}">
+								<div class="alert alert-danger">${err}</div>
+							</c:if>
 							<div class="container mt-4">
 								<h2 class="text-center">Danh Sách Sinh Viên</h2>
 
@@ -115,6 +118,11 @@
 															class="btn btn-sm btn-info">
 															<i class="fa-regular fa-paper-plane"
 																style="color: #ec2618;"></i>
+														</a>
+														<a title="chuyển phòng"
+															href="/admin/sinhvien/dichvu/${sinhVien.maSV}"
+															class="btn btn-sm btn-info">
+															<i class="fa-solid fa-file-pen" style="color: #ec2618;"></i>
 														</a>
 
 													</div>

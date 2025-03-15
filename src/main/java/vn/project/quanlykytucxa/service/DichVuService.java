@@ -1,11 +1,13 @@
 package vn.project.quanlykytucxa.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import vn.project.quanlykytucxa.DTO.DVDangSuDungDTO;
 import vn.project.quanlykytucxa.domain.DichVu;
 import vn.project.quanlykytucxa.domain.HopDong;
 import vn.project.quanlykytucxa.domain.SuDungDichVu;
@@ -71,6 +73,12 @@ public class DichVuService {
 	public DichVu findById(String maDV) {
 
 		return dichVuRepository.findById(maDV).orElse(null);
+	}
+
+	public List<DVDangSuDungDTO> layTaCaDichVuSVDangSuDung(String id) {
+		List<DVDangSuDungDTO> dtos = new ArrayList<>();
+		dtos = dichVuRepository.layTaCaDichVuSVDangSuDung(id);
+		return dtos;
 	}
 
 }

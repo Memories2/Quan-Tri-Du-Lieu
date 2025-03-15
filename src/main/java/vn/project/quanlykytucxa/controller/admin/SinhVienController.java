@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import vn.project.quanlykytucxa.DTO.DVDangSuDungDTO;
 import vn.project.quanlykytucxa.DTO.SearchSVDTO;
 import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.domain.SinhVien;
+import vn.project.quanlykytucxa.service.DichVuService;
 import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
@@ -28,10 +30,12 @@ public class SinhVienController {
 	@Autowired
 	private PhongService phongService;
 
+	@Autowired
+	private DichVuService dichVuService;
+
 	@GetMapping("/admin/sinhvien/tiemkiem")
 	public String timKiemSinhVien(@ModelAttribute SearchSVDTO searchDTO, Model model) {
 
-		System.out.println(searchDTO.toString());
 		List<SinhVienIndexViewModel> danhSachSV = new ArrayList<>();
 
 		// Tìm theo mã sinh viên
@@ -90,7 +94,8 @@ public class SinhVienController {
 			if (danhSachSV.isEmpty()) {
 				danhSachSV = sinhVienService.getSinhVienMTrangThaiHopDong(searchDTO.getTrangThaiHopDong());
 			} else {
-				List<SinhVienIndexViewModel> danhSachSV01 = sinhVienService.getSinhVienMTrangThaiHopDong(searchDTO.getTrangThaiHopDong());
+				List<SinhVienIndexViewModel> danhSachSV01 = sinhVienService
+						.getSinhVienMTrangThaiHopDong(searchDTO.getTrangThaiHopDong());
 				danhSachSV.retainAll(danhSachSV01);
 			}
 		}
@@ -169,6 +174,37 @@ public class SinhVienController {
 		model.addAttribute("sinhVien", sinhVien);
 
 		return "redirect:/admin/sinhvien/chuyenphong/" + idSinhVien;
+
 	}
 
+	@GetMapping("/admin/sinhvien/dichvu/{id}")
+	public String dichvusinhviendadangky(@PathVariable("id") String id, Model model,
+			RedirectAttributes redirectAttributes) {
+		// Kiểm tra sinh viên có còn hợp đồng hay không nếu không thì ngưng tra về index
+		// kèm theo thông báo sinh viên không còn trong ktx
+		List<SinhVienIndexViewModel> danhSachSV = new ArrayList<>();
+		danhSachSV = sinhVienService.getSinhVienMTrangThaiHopDong(0);
+		SinhVien sinhVien = sinhVienService.findById(id);
+		for (SinhVienIndexViewModel sinhVienIndexViewModel : danhSachSV) {
+			if (sinhVienIndexViewModel.getMaSV().equals(id)) {
+				redirectAttributes.addFlashAttribute("err",
+						"Hợp đồng sinh viên không còn hiệu lực không thể đăng ký dịch vụ");
+				return "redirect:/admin/sinhvien";
+			}
+		}
+		// Nếu sinh viên còn hợp đồng thì lấy danh sách tên và mã tất cả dịch vụ mà sv
+		// đang sử dụng
+		List<DVDangSuDungDTO> dtos = dichVuService.layTaCaDichVuSVDangSuDung(id);
+		String sinhVienId = id;
+		model.addAttribute("dtos", dtos);
+		model.addAttribute("sinhVienId", id);
+		return "admin/sinhvien/dich-vu-da-dang-ky";
+	}
+
+	@GetMapping("/admin/sinhvien/{dSV}/{idsdv}")
+	public String xuatHoaDon(@PathVariable("idsdv") String idsdv, @PathVariable("idsdv") String idSV, Model model,
+			RedirectAttributes redirectAttributes) {
+
+		return "redirect:/admin/sinhvien/dichvu/" + idSV;
+	}
 }
