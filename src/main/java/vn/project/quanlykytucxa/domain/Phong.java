@@ -11,6 +11,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 
 @Entity
 public class Phong {
@@ -39,10 +43,13 @@ public class Phong {
 	@NotNull(message = "Tình trạng không được để trống")
 	private TinhTrangPhong tinhTrang = TinhTrangPhong.TRONG;
 
+	@OneToMany(mappedBy = "phong", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PhieuDangKy> phieuDangKyList = new ArrayList<>();
+
 	public enum TinhTrangPhong {
-		TRONG,  // Empty
-		DAY,    // Full
-		SUACHUA // 
+		TRONG, // Empty
+		DAY, // Full
+		SUACHUA //
 	}
 
 	public Phong() {
@@ -105,6 +112,24 @@ public class Phong {
 		this.soPhong = soPhong;
 		this.soLuongToiDa = soLuongToiDa;
 		this.tinhTrang = tinhTrang;
+	}
+
+	public List<PhieuDangKy> getPhieuDangKyList() {
+		return phieuDangKyList;
+	}
+
+	public void setPhieuDangKyList(List<PhieuDangKy> phieuDangKyList) {
+		this.phieuDangKyList = phieuDangKyList;
+	}
+
+	public void addPhieuDangKy(PhieuDangKy phieuDangKy) {
+		phieuDangKyList.add(phieuDangKy);
+		phieuDangKy.setPhong(this);
+	}
+
+	public void removePhieuDangKy(PhieuDangKy phieuDangKy) {
+		phieuDangKyList.remove(phieuDangKy);
+		phieuDangKy.setPhong(null);
 	}
 
 }

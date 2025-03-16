@@ -38,6 +38,11 @@
                             </div>
                             Doanh thu
                         </a>
+
+                        <a class="nav-link" href="/admin/phieudangky">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-file-signature"></i></div>
+                            Phiếu đăng ký
+                        </a>
                         
                     </div>
                 </div>

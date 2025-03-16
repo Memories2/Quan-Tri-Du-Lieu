@@ -1,12 +1,16 @@
 package vn.project.quanlykytucxa.domain;
 
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 
 @Entity
 public class SinhVien {
@@ -32,7 +36,10 @@ public class SinhVien {
 	}
 
 	@Column
-    private String role;
+	private String role;
+
+	@OneToMany(mappedBy = "sinhVien", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PhieuDangKy> phieuDangKyList = new ArrayList<>();
 
 	public SinhVien() {
 		super();
@@ -55,7 +62,7 @@ public class SinhVien {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	public void setMaSV(String maSV) {
 		this.maSV = maSV;
 	}
@@ -111,6 +118,24 @@ public class SinhVien {
 
 	public String getRole() {
 		return role;
+	}
+
+	public List<PhieuDangKy> getPhieuDangKyList() {
+		return phieuDangKyList;
+	}
+
+	public void setPhieuDangKyList(List<PhieuDangKy> phieuDangKyList) {
+		this.phieuDangKyList = phieuDangKyList;
+	}
+
+	public void addPhieuDangKy(PhieuDangKy phieuDangKy) {
+		phieuDangKyList.add(phieuDangKy);
+		phieuDangKy.setSinhVien(this);
+	}
+
+	public void removePhieuDangKy(PhieuDangKy phieuDangKy) {
+		phieuDangKyList.remove(phieuDangKy);
+		phieuDangKy.setSinhVien(null);
 	}
 
 }

@@ -47,6 +47,21 @@ public class HopDongService {
         return hopDongRepository.existsById(maHopDong);
     }
 
+    // check hợp đồng đăng hợp lệ tồn tại
+    public boolean kiemTraHopDongHopLe(String maSV) {
+
+        // 1 là hoạt động, 0 là hết hạn
+        // nếu hợp đồng trạng thái = 1 nghĩa là đang hoạt động
+        // nếu hợp đồng trạng thái = 0 nghĩa là hết hạn
+        List<HopDong> hopDongs = hopDongRepository.findAllBySinhVienId(maSV);
+        for (HopDong hopDong : hopDongs) {
+            if (hopDong.getTrangThai() == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Transactional(readOnly = true)
     public List<HopDong> layTatCaHopDongHopLeCuaMotPhong(String maPhong) {
 

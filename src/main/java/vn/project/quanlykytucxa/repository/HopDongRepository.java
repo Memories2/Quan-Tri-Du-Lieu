@@ -22,6 +22,10 @@ public interface HopDongRepository extends JpaRepository<HopDong, String> {
 	@Query(value = "SELECT * FROM hop_dong WHERE ma_phong = :maPhong", nativeQuery = true)
 	List<HopDong> findAllByPhongId(@Param("maPhong") String maPhong);
 
+	// get all contracts by sinh vien id
+	@Query(value = "SELECT * FROM hop_dong WHERE maSV = :maSV", nativeQuery = true)
+	List<HopDong> findAllBySinhVienId(@Param("maSV") String maSV);
+
 // Kiểm tra xem hợp đồng có tồn tại cho mã sinh viên không
 	boolean existsBySinhVienMaSV(String maSV);
 

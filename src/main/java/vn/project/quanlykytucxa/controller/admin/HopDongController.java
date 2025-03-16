@@ -18,12 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import vn.project.quanlykytucxa.domain.HopDong;
+import vn.project.quanlykytucxa.domain.PhieuDangKy;
 import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.domain.SinhVien;
 import vn.project.quanlykytucxa.exception.BusinessException;
 import vn.project.quanlykytucxa.repository.HopDongRepository;
 import vn.project.quanlykytucxa.service.HopDongService;
 import vn.project.quanlykytucxa.service.PDFGeneratorService;
+import vn.project.quanlykytucxa.service.PhieuDangKyService;
 import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
 
@@ -45,20 +47,20 @@ public class HopDongController {
     @Autowired
     private PDFGeneratorService pdfGeneratorService;
 
+    @Autowired
+    private PhieuDangKyService phieuDangKyService;
+
     @GetMapping("/admin/hopdong/kiem-tra-hop-dong")
     public String kiemTraHopDong(@RequestParam("maSV") String maSV, Model model) {
         // Gọi service để kiểm tra hợp đồng của sinh viên
         String result = hopDongService.kiemTraHopDong(maSV);
-        
+
         // Thêm kết quả vào model để hiển thị trên JSP
         model.addAttribute("result", result);
         model.addAttribute("maSV", maSV);
 
         return "admin/hopdong/danh-sach-hop-dong"; // Trả về trang JSP
     }
-    
-
-
 
     ////////////////////////// Thêm hợp đồng //////////////////////////
     @GetMapping("admin/hopdong/themHopDong")
@@ -66,6 +68,30 @@ public class HopDongController {
 
         HopDong newHopDong = new HopDong();
         newHopDong.setSinhVien(new SinhVien()); // Khởi tạo đối tượng SinhVien
+
+        // Thiết lập giá trị mặc định cho ngày
+        newHopDong.setNgayBatDau(LocalDate.now());
+        newHopDong.setNgayKetThuc(LocalDate.now().plusMonths(3));
+
+        model.addAttribute("newHopDong", newHopDong);
+
+        return "admin/hopdong/them-hop-dong";
+    }
+
+    @GetMapping("admin/hopdong/themHopDong/{maPhieuDK}")
+    public String themHopDong_2(@PathVariable("maPhieuDK") String maPhieuDK, Model model) {
+        // lấy phiếu đăng ký từ maPhieuDK
+        PhieuDangKy phieuDangKy = phieuDangKyService.findPhieuDangKyById(Long.parseLong(maPhieuDK));
+
+        HopDong newHopDong = new HopDong();
+
+        // lấy sinh viên từ phiếu đăng ký
+        SinhVien sinhVien = phieuDangKy.getSinhVien();
+        newHopDong.setSinhVien(sinhVien); // Khởi tạo đối tượng SinhVien
+
+        // lấy phòng từ phiếu đăng ký
+        Phong phong = phieuDangKy.getPhong();
+        newHopDong.setPhong(phong); // Khởi tạo đối tượng Phong
 
         // Thiết lập giá trị mặc định cho ngày
         newHopDong.setNgayBatDau(LocalDate.now());

@@ -19,12 +19,14 @@ public class PhongService {
 	private final PhongRepository phongRepository;
 	private final LoaiPhongRepository loaiPhongRepository;
 	private final HopDongRepository hopDongRepository;
+	private final HopDongService hopDongService;
 
 	public PhongService(PhongRepository phongRepository, LoaiPhongRepository loaiPhongRepository,
-			HopDongRepository hopDongRepository) {
+			HopDongRepository hopDongRepository, HopDongService hopDongService) {
 		this.phongRepository = phongRepository;
 		this.loaiPhongRepository = loaiPhongRepository;
 		this.hopDongRepository = hopDongRepository;
+		this.hopDongService = hopDongService;
 
 	}
 
@@ -99,6 +101,12 @@ public class PhongService {
 	public int demSoLuongHopDong(String maPhong) {
 		return phongRepository.demSoLuongHopDong(maPhong);
 	}
+
+	public int getSoLuongSinhVienHienTaiCuaMotPhong(String maPhong) {
+		return hopDongService.layTatCaHopDongHopLeCuaMotPhong(maPhong).size();
+	}
+
+	
 
 //	// Cập nhật trạng thái phòng
 //	@Transactional
