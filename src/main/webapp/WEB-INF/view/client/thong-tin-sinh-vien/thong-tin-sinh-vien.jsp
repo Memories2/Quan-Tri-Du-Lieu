@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Dự án quản lý ký túc xá" />
         <meta name="author" content="" />
-        <title>Trang chủ sinh viên</title>
+        <title>Thông tin cá nhân</title>
         <link href="/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
@@ -105,6 +105,54 @@
           .stats-card.available {
             background-color: #e6f8e6;
           }
+
+          table {
+                width: 50%; /* Giảm kích thước bảng */
+                margin: 20px 0; /* Khoảng cách trên và dưới bảng */
+                border-collapse: collapse;
+                font-size: 1.1rem; /* Chữ lớn hơn */
+                text-align: left; /* Căn trái toàn bộ bảng */
+            }
+
+            table td, table th {
+                padding: 12px 15px; /* Tăng khoảng cách trong các ô */
+                border: 2px solid black; /* Viền đậm hơn */
+            }
+
+            table th {
+                background-color: #f8f9fa;
+                font-weight: bold;
+                color: #000; /* Màu chữ đen cho tiêu đề */
+                font-size: 1.2rem; /* Chữ tiêu đề to hơn */
+            }
+
+            table td {
+                background-color: #ffffff;
+                color: #000; /* Màu chữ đen cho nội dung */
+                font-size: 1.1rem; /* Chữ các ô lớn hơn */
+            }
+
+            /* Hover effect cho các dòng */
+            table tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            /* Tạo sự phân biệt giữa các dòng */
+            table tr:nth-child(odd) {
+                background-color: #f9f9f9;
+            }
+
+            table tr:nth-child(even) {
+                background-color: #ffffff;
+            }
+
+            /* Định dạng cho các tiêu đề cột */
+            table td:first-child {
+                font-weight: bold;
+                color: black; /* In đậm và đổi màu cho cột đầu */
+            }
+
+
         </style>
       </head>
 
@@ -142,7 +190,7 @@
               <div class="sb-sidenav-menu">
                 <div class="nav">
                   <div class="sb-sidenav-menu-heading">Trang chính</div>
-                  <a class="nav-link active" href="/client">
+                  <a class="nav-link" href="/client">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                   </a>
@@ -153,7 +201,7 @@
                     Hợp đồng của tôi
                   </a>
                   <div class="sb-sidenav-menu-heading">Thông tin</div>
-                  <a class="nav-link" href="/client/thong-tin-sinh-vien">
+                  <a class="nav-link  active" href="/client/thong-tin-sinh-vien">
                     <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                     Thông tin cá nhân   
                     
@@ -169,103 +217,28 @@
 
           <div id="layoutSidenav_content">
             <main>
-              <div class="container-fluid px-4">
-                <h1 class="mt-4">Dashboard Sinh Viên</h1>
-                <ol class="breadcrumb mb-4">
-                  <li class="breadcrumb-item"><a href="/client">Trang chủ</a></li>
-                  <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
-
-                <!-- Alert messages -->
-                <c:if test="${not empty successMessage}">
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${successMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                </c:if>
-                <c:if test="${not empty errorMessage}">
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${errorMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                </c:if>
-
-                <!-- Custom Room Stats -->
-                <div class="custom-room-stats">
-                  <div class="stats-card filled">
-                    <h3>Tổng số phòng</h3>
-                    <div class="count">${danhSachPhong.size()}</div>
-                  </div>
-                  <div class="stats-card available">
-                    <h3>Phòng trống</h3>
-                    <div class="count">${danhSachPhong.stream().filter(phong -> phong.tinhTrang == "TRONG").count()}</div>
-                  </div>
-                  <div class="stats-card">
-                    <h3>Sinh viên đang ở</h3>
-                    <div class="count">15</div>
-                  </div>
-                </div>
-
-                <div class="card mb-4">
-                  <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                      <i class="fas fa-table me-1"></i>
-                      Danh sách phòng
-                    </div>
-                    <div>
-                      <button class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-filter"></i> Lọc
-                      </button>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <table id="phongTable" class="table table-striped table-bordered">
-                      <thead>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Thông tin cá nhân</h1>
+                    <table>
                         <tr>
-                          <th>Mã phòng</th>
-                          <th>Số phòng</th>
-                          <th>Loại phòng</th>
-                          <th>Số lượng tối đa</th>
-                          <th>Tình trạng</th>
-                          <th>Số lượng SV hiện tại</th>
-                          <th>Thao tác</th>
+                            <td>Mã sinh viên:</td>
+                            <td>${sinhVien.maSV}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        <c:forEach var="phong" items="${danhSachPhong}">
-                          <tr>
-                            <td>${phong.maPhong}</td>
-                            <td>${phong.soPhong}</td>
-                            <td>${phong.loaiPhong.tenLoaiPhong}</td>
-                            <td>${phong.soLuongToiDa}</td>
-                            <td>
-                              <c:choose>
-                                <c:when test="${phong.tinhTrang == 'TRONG'}">
-                                  <span class="badge bg-success">Trống</span>
-                                </c:when>
-                                <c:when test="${phong.tinhTrang == 'DAY'}">
-                                  <span class="badge bg-danger">Đầy</span>
-                                </c:when>
-                                <c:when test="${phong.tinhTrang == 'SUACHUA'}">
-                                  <span class="badge bg-warning text-dark">Sửa chữa</span>
-                                </c:when>
-                              </c:choose>
-                            </td>
-                            <td>
-                              <span class="fw-bold text-primary">${soLuongSinhVienHienTai[phong]}</span>/<span>${phong.soLuongToiDa}</span>
-                            </td>
-                            <td>
-                              <a href="/client/phieudangky/${phong.maPhong}" class="btn btn-sm btn-success ms-1">
-                                <i class="fas fa-check"></i> Đăng ký
-                              </a>
-                            </td>
-                          </tr>
-                        </c:forEach>
-                      </tbody>
+                        <tr>
+                            <td>Họ tên:</td>
+                            <td>${sinhVien.hoTen}</td>
+                        </tr>
+                
+                        <tr>
+                            <td>Giới tính:</td>
+                            <td>${sinhVien.gioiTinh}</td>
+                        </tr>
+                        <tr>
+                            <td>Số điện thoại:</td>
+                            <td>${sinhVien.soDienThoai}</td>
+                        </tr>
                     </table>
-                  </div>
                 </div>
-              </div>
             </main>
 
             <!-- Footer -->

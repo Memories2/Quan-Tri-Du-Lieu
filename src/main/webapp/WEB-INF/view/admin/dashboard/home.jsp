@@ -1,6 +1,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<h1>Thông tin cá nhân</h1>
+<table>
+    <tr>
+        <td>Mã sinh viên:</td>
+        <td>${sinhVien.maSV}</td>
+    </tr>
+    <tr>
+        <td>Họ tên:</td>
+        <td>${sinhVien.hoTen}</td>
+    </tr>
+    <tr>
+        <td>Giới tính:</td>
+        <td>${sinhVien.gioiTinh}</td>
+    </tr>
+</table>
 <!DOCTYPE html>
 <html lang="en">
   <head>
