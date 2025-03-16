@@ -29,4 +29,6 @@ public interface HopDongRepository extends JpaRepository<HopDong, String> {
 	@Query("SELECT h.ngayKetThuc FROM HopDong h WHERE h.sinhVien.maSV = :maSV")
 	LocalDate getNgayKetThucByMaSV(@Param("maSV") String maSV);
 
+	@Query("SELECT COUNT(h) FROM HopDong h")
+    long countAllHopDong();
 }

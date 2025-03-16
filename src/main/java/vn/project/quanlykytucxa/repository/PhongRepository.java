@@ -40,4 +40,7 @@ public interface PhongRepository extends JpaRepository<Phong, String> {
 //Đếm số lượng hợp đồng trong từng phòng
 	@Query(value = "SELECT DemSoLuongHopDong(?1)", nativeQuery = true)
 	int getSoLuongHopDong(String maPhong);
+
+	@Query("SELECT COUNT(p) FROM Phong p")
+    long countAllPhong();
 }

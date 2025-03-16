@@ -4,28 +4,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import vn.project.quanlykytucxa.service.PhongService;
-import vn.project.quanlykytucxa.service.SinhVienService;
+import vn.project.quanlykytucxa.service.DashboardService;
 
 @Controller
 public class DashboardController {
 
-    private final PhongService phongService;
-    private final SinhVienService sinhVienService;
+    private final DashboardService dashboardService;
 
-    public DashboardController(PhongService phongService, SinhVienService sinhVienService) {
-        this.phongService = phongService;
-        this.sinhVienService = sinhVienService;
+    // Constructor injection
+    public DashboardController(DashboardService dashboardService) {
+        this.dashboardService = dashboardService;
     }
 
     @GetMapping("/admin")
     public String getDashboard(Model model) {
-        // Add counts for dormitory management
-        model.addAttribute("countPhong", this.phongService.countPhong());
-        model.addAttribute("countSinhVien", this.sinhVienService.countSinhVien());
+        // Truyền các dữ liệu thống kê vào model từ DashboardService
+        model.addAttribute("countPhong", dashboardService.getCountPhong());
+        model.addAttribute("countSinhVien", dashboardService.getCountSinhVien());
+        model.addAttribute("countHopDong", dashboardService.getCountHopDong());
+        model.addAttribute("countHoaDon", dashboardService.getCountHoaDonChuaThanhToan());
 
-        return "admin/dashboard/home";
+        return "admin/dashboard/home"; // Trả về trang dashboard
     }
 }
-
-
