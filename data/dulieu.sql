@@ -1,7 +1,7 @@
 #drop database quanlykytucxa;
 
 use quanlykytucxa;
-
+use quanlykytucxa
 -- Bảng sinh_vien
 INSERT INTO `quanlykytucxa`.`sinh_vien` (`masv`, `so_dien_thoai`, `ho_ten`, `mat_khau`, `gioi_tinh`, `role`) VALUES
 ('SV016', '0901234565', 'Nguyen Van 16', 'matkhau1', 'Nam', 'admin'),
@@ -220,7 +220,7 @@ CREATE PROCEDURE PhongChuaSV(IN mssv_input VARCHAR(20))
 BEGIN
     SELECT h.ma_phong
     FROM hop_dong h
-    WHERE UPPER(mssv_input) LIKE UPPER(h.masv);
+    WHERE UPPER(mssv_input) LIKE UPPER(h.masv) and h.trang_thai=1;
 END //
 
 DELIMITER ;
