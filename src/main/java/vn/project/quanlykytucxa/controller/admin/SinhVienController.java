@@ -137,6 +137,7 @@ public class SinhVienController {
 
 	@GetMapping("/admin/sinhvien/chuyenphong/{id}")
 	public String chuyenPhong(@PathVariable("id") String id, Model model) {
+		System.out.println("******************************************************************************************************************************************************************************************************************************************************************************************************************************************");
 		// Lấy tên phòng hiện tại sinh viên đang ở
 		String phong = sinhVienService.phongSinhvienDangOHienTai(id);
 		// Danh sách tạo compobox các phòng còn trống
