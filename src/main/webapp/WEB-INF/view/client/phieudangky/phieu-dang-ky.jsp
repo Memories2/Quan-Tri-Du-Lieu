@@ -146,7 +146,7 @@
                                 <i class="fas fa-user fa-fw"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item" href="/client/thong-tin-sinh-vien">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item" href="#!">Đổi mật khẩu</a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
@@ -174,17 +174,10 @@
                                         <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
                                         Hợp đồng của tôi
                                     </a>
-                                    <a class="nav-link" href="/client/dichvu">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-concierge-bell"></i></div>
-                                        Dịch vụ
-                                    </a>
-                                    <a class="nav-link" href="/client/hoadon">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                                        Hóa đơn
-                                    </a>
+                                   
 
                                     <div class="sb-sidenav-menu-heading">Thông tin</div>
-                                    <a class="nav-link" href="/client/profile">
+                                    <a class="nav-link" href="/client/thong-tin-sinh-vien">
                                         <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                         Thông tin cá nhân
                                     </a>
