@@ -2,6 +2,7 @@ package vn.project.quanlykytucxa.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,8 @@ public interface HopDongRepository extends JpaRepository<HopDong, String> {
 	LocalDate getNgayKetThucByMaSV(@Param("maSV") String maSV);
 
 	@Query("SELECT COUNT(h) FROM HopDong h")
-    long countAllHopDong();
+	long countAllHopDong();
+//
+//	@Query("SELECT h FROM HopDong h WHERE h.masv = :masv AND h.trang_thai = 1")
+//	Optional<HopDong> findHopDongBySinhVienId(@Param("masv") String masv);
 }

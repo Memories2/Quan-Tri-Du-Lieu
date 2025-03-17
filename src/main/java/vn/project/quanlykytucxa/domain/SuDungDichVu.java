@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 public class SuDungDichVu {
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(length = 8)
+	@Column(length = 255)
 	private String maSDDV;
 
 	@ManyToOne

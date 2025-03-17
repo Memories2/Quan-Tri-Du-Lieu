@@ -5,7 +5,7 @@
 			<html>
 
 			<head>
-				<title>Danh sách Sinh Viên</title>
+				<title>Danh dịch Sinh Viên đã đăng ký</title>
 				<meta charset="utf-8" />
 				<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,7 +30,11 @@
 
 							<div class="container mt-4">
 								<h2 class="text-center">Danh sách dịch vụ đã đăng ký</h2>
-
+								<a title="Đăng ký dịch vụ" 
+								            href="/admin/sinhvien/dangkydichvu/${sinhVienId}"
+								            class="btn btn-sm btn-success">
+								            <i class="fa-solid fa-plus"></i>
+								        </a>
 								<table class="table table-bordered table-hover mt-3">
 									<thead class="table-dark">
 										<tr>

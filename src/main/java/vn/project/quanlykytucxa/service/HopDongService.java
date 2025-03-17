@@ -103,4 +103,13 @@ public class HopDongService {
         return hopDongRepository.findAll();
     }
 
+	public HopDong findbyId(String maHopDong) {
+		// TODO Auto-generated method stub
+		return hopDongRepository.findById(maHopDong).orElse(null);
+	}
+
+//    public HopDong layHopDongTheoMaSinhVien(String masv) {
+//        return hopDongRepository.findHopDongBySinhVienId(masv).orElse(null);
+//    }
+
 }

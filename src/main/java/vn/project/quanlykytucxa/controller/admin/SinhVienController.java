@@ -1,25 +1,33 @@
 package vn.project.quanlykytucxa.controller.admin;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import vn.project.quanlykytucxa.DTO.DVDangSuDungDTO;
 import vn.project.quanlykytucxa.DTO.SearchSVDTO;
+import vn.project.quanlykytucxa.domain.DichVu;
+import vn.project.quanlykytucxa.domain.HopDong;
 import vn.project.quanlykytucxa.domain.Phong;
 import vn.project.quanlykytucxa.domain.SinhVien;
+import vn.project.quanlykytucxa.domain.SuDungDichVu;
 import vn.project.quanlykytucxa.service.DichVuService;
+import vn.project.quanlykytucxa.service.HopDongService;
 import vn.project.quanlykytucxa.service.PhongService;
 import vn.project.quanlykytucxa.service.SinhVienService;
+import vn.project.quanlykytucxa.service.SuDungDichVuService;
 import vn.project.quanlykytucxa.viewModel.SinhVienIndexViewModel;
 
 @Controller
@@ -32,6 +40,11 @@ public class SinhVienController {
 
 	@Autowired
 	private DichVuService dichVuService;
+
+	@Autowired
+	private HopDongService hopDongService;
+	@Autowired
+	private SuDungDichVuService suDungDichVuService;
 
 	@GetMapping("/admin/sinhvien/tiemkiem")
 	public String timKiemSinhVien(@ModelAttribute SearchSVDTO searchDTO, Model model) {
@@ -137,7 +150,8 @@ public class SinhVienController {
 
 	@GetMapping("/admin/sinhvien/chuyenphong/{id}")
 	public String chuyenPhong(@PathVariable("id") String id, Model model) {
-		System.out.println("******************************************************************************************************************************************************************************************************************************************************************************************************************************************");
+		System.out.println(
+				"******************************************************************************************************************************************************************************************************************************************************************************************************************************************");
 		// Lấy tên phòng hiện tại sinh viên đang ở
 		String phong = sinhVienService.phongSinhvienDangOHienTai(id);
 		// Danh sách tạo compobox các phòng còn trống
@@ -208,4 +222,78 @@ public class SinhVienController {
 
 		return "redirect:/admin/sinhvien/dichvu/" + idSV;
 	}
+
+	@GetMapping("/admin/sinhvien/dangkydichvu/{id}")
+	public String dangKyDichVu(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
+		// Lấy danh sách tất cả dịch vụ
+		System.out.println(
+				"****************************************************************************************************************************************************************************************************************************************************************************************");
+		List<DichVu> dichVus = dichVuService.getAllDichVu();
+
+		// Lấy hợp đồng của sinh viên theo mã sinh viên
+		List<HopDong> hopDongs = hopDongService.layTatCaHopDong();
+		HopDong hopDong = new HopDong();
+		for (HopDong hopDong2 : hopDongs) {
+			if (hopDong2.getSinhVien().getMaSV().equalsIgnoreCase(id)) {
+				hopDong = hopDong2;
+				break;
+			}
+		}
+
+		// Kiểm tra nếu sinh viên không có hợp đồng hoặc hợp đồng đã hết hạn
+		if (hopDong == null || hopDong.getTrangThai() == 0) {
+			redirectAttributes.addFlashAttribute("err", "Sinh viên đã hết hạn hợp đồng, không thể đăng ký dịch vụ.");
+			return "redirect:/admin/sinhvien/dichvu/" + id;
+		}
+
+		// Nếu hợp đồng hợp lệ, đưa danh sách dịch vụ vào Model để hiển thị trên giao
+		// diện
+		model.addAttribute("dichVus", dichVus);
+		model.addAttribute("sinhVienId", id);
+		model.addAttribute("maHopDong", hopDong.getMaHD());
+
+		// Chuyển đến trang đăng ký dịch vụ
+		return "admin/sinhvien/dang-ky-dich-vu";
+	}
+
+	@PostMapping("/admin/sinhvien/dangkydichvu/save")
+	public String dangKyDichVu(@RequestParam("maHopDong") String maHopDong, @RequestParam("maDV") String maDV,
+			@RequestParam("sl") int soLuong,
+			@RequestParam("ngayDangKy") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayDangKy,
+			RedirectAttributes redirectAttributes) {
+		try {
+			// Kiểm tra hợp đồng và dịch vụ có tồn tại không
+			HopDong hopDong = hopDongService.findbyId(maHopDong);
+			DichVu dichVu = dichVuService.findById(maDV);
+			if (hopDong == null || dichVu == null) {
+				throw new RuntimeException("Hợp đồng hoặc dịch vụ không tồn tại!");
+			}
+
+			// Tạo đối tượng sử dụng dịch vụ
+			SuDungDichVu dangKy = new SuDungDichVu();
+			dangKy.setHopDong(hopDong);
+			dangKy.setDichVu(dichVu);
+			dangKy.setSoLuongSuDung(soLuong);
+			dangKy.setThangSuDung(ngayDangKy.getMonthValue());
+			dangKy.setNamSuDung(ngayDangKy.getYear());
+
+			// Tạo khóa chính
+			String maSDDV = maHopDong + maDV + ngayDangKy.toString();
+			if (suDungDichVuService.existsById(maSDDV)) {
+				throw new RuntimeException("Dịch vụ đã được đăng ký trước đó!");
+			}
+			dangKy.setMaSDDV(maSDDV);
+
+			// Lưu vào database
+			suDungDichVuService.save(dangKy);
+
+			redirectAttributes.addFlashAttribute("success", "Đăng ký dịch vụ thành công!");
+			return "redirect:/admin/sinhvien/dichvu/" + hopDong.getSinhVien().getMaSV();
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("err", "Có lỗi xảy ra khi đăng ký: " + e.getMessage());
+			return "redirect:/admin/sinhvien/dangkydichvu/";
+		}
+	}
+
 }
