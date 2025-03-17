@@ -12,7 +12,7 @@ uri="http://www.springframework.org/tags/form" prefix="form" %>
     />
     <meta name="description" content="Dự án quản lý ký túc xá" />
     <meta name="author" content="" />
-    <title>Trang chủ sinh viên</title>
+    <title>Thông tin cá nhân</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -113,6 +113,70 @@ uri="http://www.springframework.org/tags/form" prefix="form" %>
       .stats-card.available {
         background-color: #e6f8e6;
       }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-size: 0.9em;
+        min-width: 600px;
+        overflow-x: auto;
+      }
+
+      table thead tr {
+        background-color: #4e73df;
+        color: white;
+        text-align: left;
+      }
+
+      table th,
+      table td {
+        padding: 12px 15px;
+        border: 1px solid #dddfeb;
+      }
+
+      table tbody tr {
+        border-bottom: 1px solid #dddfeb;
+        transition: all 0.2s ease;
+      }
+
+      table tbody tr:nth-of-type(even) {
+        background-color: #f8f9fc;
+      }
+
+      table tbody tr:last-of-type {
+        border-bottom: 2px solid #4e73df;
+      }
+
+      /*=============== BADGE TRẠNG THÁI ===============*/
+      .status-badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+      }
+
+      /* Đang hiệu lực */
+      tr td:nth-child(6):contains("Đang hiệu lực") {
+        background-color: #28a745 !important;
+        color: white;
+      }
+
+      /* Đã kết thúc */
+      tr td:nth-child(6):contains("Đã kết thúc") {
+        background-color: #dc3545 !important;
+        color: white;
+      }
+
+      /* Chưa xác định */
+      tr td:nth-child(6):contains("Chưa xác định") {
+        background-color: #6c757d !important;
+        color: white;
+      }
     </style>
   </head>
 
@@ -168,7 +232,7 @@ uri="http://www.springframework.org/tags/form" prefix="form" %>
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">Trang chính</div>
-              <a class="nav-link active" href="/client">
+              <a class="nav-link" href="/client">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-tachometer-alt"></i>
                 </div>
@@ -176,7 +240,7 @@ uri="http://www.springframework.org/tags/form" prefix="form" %>
               </a>
 
               <div class="sb-sidenav-menu-heading">Quản lý</div>
-              <a class="nav-link" href="/client/hopdong">
+              <a class="nav-link active" href="/client/hopdong">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-file-contract"></i>
                 </div>
@@ -199,125 +263,43 @@ uri="http://www.springframework.org/tags/form" prefix="form" %>
       <div id="layoutSidenav_content">
         <main>
           <div class="container-fluid px-4">
-            <h1 class="mt-4">Dashboard Sinh Viên</h1>
-            <ol class="breadcrumb mb-4">
-              <li class="breadcrumb-item"><a href="/client">Trang chủ</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-
-            <!-- Alert messages -->
-            <c:if test="${not empty successMessage}">
-              <div
-                class="alert alert-success alert-dismissible fade show"
-                role="alert"
-              >
-                ${successMessage}
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                ></button>
-              </div>
-            </c:if>
-            <c:if test="${not empty errorMessage}">
-              <div
-                class="alert alert-danger alert-dismissible fade show"
-                role="alert"
-              >
-                ${errorMessage}
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                ></button>
-              </div>
-            </c:if>
-
-            <!-- Custom Room Stats -->
-            <div class="custom-room-stats">
-              <div class="stats-card filled">
-                <h3>Tổng số phòng</h3>
-                <div class="count">${danhSachPhong.size()}</div>
-              </div>
-              <div class="stats-card available">
-                <h3>Phòng trống</h3>
-                <div class="count">
-                  ${danhSachPhong.stream().filter(phong -> phong.tinhTrang ==
-                  "TRONG").count()}
-                </div>
-              </div>
-              <div class="stats-card">
-                <h3>Sinh viên đang ở</h3>
-                <div class="count">15</div>
-              </div>
-            </div>
+            <h1 class="mt-4">Hợp đồng của tôi</h1>
 
             <div class="card mb-4">
-              <div
-                class="card-header d-flex justify-content-between align-items-center"
-              >
-                <div>
-                  <i class="fas fa-table me-1"></i>
-                  Danh sách phòng
-                </div>
-                <div>
-                  <button class="btn btn-outline-primary btn-sm">
-                    <i class="fas fa-filter"></i> Lọc
-                  </button>
-                </div>
+              <div class="card-header">
+                <i class="fas fa-file-contract me-1"></i>
+                Danh sách hợp đồng
               </div>
               <div class="card-body">
-                <table
-                  id="phongTable"
-                  class="table table-striped table-bordered"
-                >
+                <table>
                   <thead>
                     <tr>
-                      <th>Mã phòng</th>
-                      <th>Số phòng</th>
-                      <th>Loại phòng</th>
-                      <th>Số lượng tối đa</th>
-                      <th>Tình trạng</th>
-                      <th>Số lượng SV hiện tại</th>
-                      <th>Thao tác</th>
+                      <th>Mã Hợp Đồng</th>
+                      <th>Mã Sinh Viên</th>
+                      <th>Mã Phòng</th>
+                      <th>Ngày Bắt Đầu</th>
+                      <th>Ngày Kết Thúc</th>
+                      <th>Trạng Thái</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <c:forEach var="phong" items="${danhSachPhong}">
+                    <!-- Duyệt qua danh sách hợp đồng và hiển thị thông tin -->
+                    <c:forEach var="hopDong" items="${hopDongs}">
                       <tr>
-                        <td>${phong.maPhong}</td>
-                        <td>${phong.soPhong}</td>
-                        <td>${phong.loaiPhong.tenLoaiPhong}</td>
-                        <td>${phong.soLuongToiDa}</td>
+                        <td>${hopDong.maHD}</td>
+                        <td>${hopDong.sinhVien.maSV}</td>
+                        <td>${hopDong.phong.maPhong}</td>
+                        <td>${hopDong.ngayBatDau}</td>
+                        <td>${hopDong.ngayKetThuc}</td>
                         <td>
                           <c:choose>
-                            <c:when test="${phong.tinhTrang == 'TRONG'}">
-                              <span class="badge bg-success">Trống</span>
-                            </c:when>
-                            <c:when test="${phong.tinhTrang == 'DAY'}">
-                              <span class="badge bg-danger">Đầy</span>
-                            </c:when>
-                            <c:when test="${phong.tinhTrang == 'SUACHUA'}">
-                              <span class="badge bg-warning text-dark"
-                                >Sửa chữa</span
-                              >
-                            </c:when>
+                            <c:when test="${hopDong.trangThai == 1}"
+                              >Đang hiệu lực</c:when
+                            >
+                            <c:when test="${hopDong.trangThai == 0}"
+                              >Đã kết thúc</c:when
+                            >
                           </c:choose>
-                        </td>
-                        <td>
-                          <span class="fw-bold text-primary"
-                            >${soLuongSinhVienHienTai[phong]}</span
-                          >/<span>${phong.soLuongToiDa}</span>
-                        </td>
-                        <td>
-                          <a
-                            href="/client/phieudangky/${phong.maPhong}"
-                            class="btn btn-sm btn-success ms-1"
-                          >
-                            <i class="fas fa-check"></i> Đăng ký
-                          </a>
                         </td>
                       </tr>
                     </c:forEach>
